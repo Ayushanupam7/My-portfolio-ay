@@ -111,8 +111,7 @@ export const achievements = [
     icon: "award",
     link: "https://www.google.com/",
     images: [
-      "./src/data/assets/profile.jpeg",
-      ""
+      "./src/data/assets/profile.jpeg"
     ]
   },
 
