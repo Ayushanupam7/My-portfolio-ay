@@ -226,9 +226,10 @@ export const certificates = [
 
 export const testimonials = [
   {
-    id: "2",
+    id: "1",
     name: "Akarsh Anupam",
     position: "Student",
+    role:"Student",
     company: "akarsheditz_",
     image: "./assets/akarsh.jpg",
     comment:
@@ -240,6 +241,7 @@ export const testimonials = [
     id: "2",
     name: "Akarsh Anupam",
     position: "Student",
+    role:"Student",
     company: "akarsheditz_",
     image: "./assets/akarsh.jpg",
     comment:

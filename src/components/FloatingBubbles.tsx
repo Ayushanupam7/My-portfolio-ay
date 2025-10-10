@@ -9,6 +9,7 @@ interface Bubble {
   position: { x: number; y: number };
   delay: number;
   timestamp: Date;
+  role: string;
 }
 
 interface FloatingBubblesProps {
@@ -28,6 +29,7 @@ const generateRandomBubble = (id: number): Bubble => {
     id,
     name: randomTestimonial.name,
     image: randomTestimonial.image,
+    role: randomTestimonial.role || "Visitor",
     comment: randomTestimonial.comment,
     position: {
       x: Math.random() * 100 - 50,
@@ -38,21 +40,16 @@ const generateRandomBubble = (id: number): Bubble => {
   };
 };
 
-// Testimonial Modal Component
 function TestimonialModal({ testimonial, isOpen, onClose }: TestimonialModalProps) {
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
-      {/* Backdrop */}
       <div
         className="absolute inset-0 bg-black bg-opacity-50 transition-opacity duration-300"
         onClick={onClose}
       />
-
-      {/* Modal Content */}
       <div className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-6 mx-4 max-w-md w-full transform animate-scale-in">
-        {/* Close Button */}
         <button
           onClick={onClose}
           className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors duration-200"
@@ -62,7 +59,6 @@ function TestimonialModal({ testimonial, isOpen, onClose }: TestimonialModalProp
           </svg>
         </button>
 
-        {/* Profile Header */}
         <div className="flex items-center gap-4 mb-6">
           <img
             src={testimonial.image}
@@ -71,11 +67,10 @@ function TestimonialModal({ testimonial, isOpen, onClose }: TestimonialModalProp
           />
           <div>
             <h3 className="text-xl font-bold text-gray-900 dark:text-white">{testimonial.name}</h3>
-            <p className="text-gray-600 dark:text-gray-300 text-sm">Visitor</p>
+            <p className="text-gray-600 dark:text-gray-300 text-sm">{testimonial.role}</p>
           </div>
         </div>
 
-        {/* Comment Section */}
         <div className="mb-6">
           <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">Comment</h4>
           <p className="text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-700 rounded-lg p-4 text-sm leading-relaxed">
@@ -83,7 +78,6 @@ function TestimonialModal({ testimonial, isOpen, onClose }: TestimonialModalProp
           </p>
         </div>
 
-        {/* Timestamp */}
         <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 border-t dark:border-gray-600 pt-4">
           <span>Received:</span>
           <span>
@@ -93,7 +87,6 @@ function TestimonialModal({ testimonial, isOpen, onClose }: TestimonialModalProp
           </span>
         </div>
 
-        {/* Decorative Elements */}
         <div className="absolute -top-2 -right-2 w-8 h-8 bg-[#00C9A7] rounded-full opacity-20 animate-pulse"></div>
         <div className="absolute -bottom-2 -left-2 w-6 h-6 bg-[#00C9A7] rounded-full opacity-20 animate-pulse"></div>
       </div>
@@ -115,6 +108,29 @@ export default function FloatingBubbles({ enabled = true }: FloatingBubblesProps
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setTimeout(() => setSelectedTestimonial(null), 300);
+  };
+
+  // Swipe handling
+  const handleTouchStart = (e: React.TouchEvent, bubbleId: number) => {
+    const touchStartX = e.touches[0].clientX;
+
+    const handleTouchMove = (moveEvent: TouchEvent) => {
+      const touchEndX = moveEvent.touches[0].clientX;
+      if (Math.abs(touchEndX - touchStartX) > 50) {
+        // Remove bubble if swipe distance > 50px
+        setBubbles(prev => prev.filter(b => b.id !== bubbleId));
+        window.removeEventListener('touchmove', handleTouchMove);
+      }
+    };
+
+    window.addEventListener('touchmove', handleTouchMove);
+
+    const handleTouchEnd = () => {
+      window.removeEventListener('touchmove', handleTouchMove);
+      window.removeEventListener('touchend', handleTouchEnd);
+    };
+
+    window.addEventListener('touchend', handleTouchEnd);
   };
 
   useEffect(() => {
@@ -155,6 +171,7 @@ export default function FloatingBubbles({ enabled = true }: FloatingBubblesProps
               animationDelay: `${bubble.delay}s`,
               animationDuration: '20s',
             }}
+            onTouchStart={(e) => handleTouchStart(e, bubble.id)} // swipe-to-remove
           >
             <div
               className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-2 sm:p-3 mb-3 pointer-events-auto transform hover:scale-105 transition-transform duration-300 border border-gray-200 dark:border-gray-700 max-w-[150px] sm:max-w-[220px] cursor-pointer hover:shadow-xl active:scale-95"
@@ -170,6 +187,7 @@ export default function FloatingBubbles({ enabled = true }: FloatingBubblesProps
                   <p className="font-semibold text-[10px] sm:text-xs text-gray-900 dark:text-white truncate">
                     {bubble.name}
                   </p>
+                  <p className="text-[8px] sm:text-[9px] text-gray-400 mt-0.5 truncate">{bubble.role}</p>
                   <p className="text-[9px] sm:text-[10px] text-gray-600 dark:text-gray-300 mt-0.5 break-words line-clamp-2">
                     {bubble.comment}
                   </p>
