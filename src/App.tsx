@@ -20,18 +20,22 @@ function App() {
 
   return (
     <ThemeProvider>
-      <div className="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300">
+      {/* Prevent horizontal scrolling and ensure full responsiveness */}
+      <div className="overflow-x-hidden min-h-screen w-full bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300">
         <Navigation 
           onToggleNotifications={handleToggleNotifications}
           notificationsEnabled={notificationsEnabled}
         />
-        <Hero />
         
-        <About />
-        <Skills />
-        <Projects />
-        <Achievements />
-        <Contact />
+        <main className="flex flex-col items-center justify-center">
+          <Hero />
+          <About />
+          <Skills />
+          <Projects />
+          <Achievements />
+          <Contact />
+        </main>
+
         <Footer />
         <ScrollToTop />
         <FloatingBubbles enabled={notificationsEnabled} />

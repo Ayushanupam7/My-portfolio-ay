@@ -34,13 +34,13 @@ export default function Navigation({ onToggleNotifications, notificationsEnabled
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 shadow-sm transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          {/* Profile Image & Name */}
+          {/* Profile & Name */}
           <div className="flex items-center space-x-3 flex-shrink-0">
             <div
-              className="w-12 h-12 rounded-full p-1 cursor-pointer"
+              className="w-11 h-11 rounded-full cursor-pointer hover:scale-105 transition-transform"
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             >
               <img
@@ -49,24 +49,24 @@ export default function Navigation({ onToggleNotifications, notificationsEnabled
                 className="w-full h-full rounded-full object-cover"
               />
             </div>
-            <span className="text-xl font-semibold text-gray-900 dark:text-white">
+            <span className="text-base font-bold text-gray-900 dark:text-white">
               Ayush Anupam
             </span>
           </div>
 
-          {/* Desktop Navigation */}
+          {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-4">
             {navItems.map(item => (
               <button
                 key={item.id}
                 onClick={() => scrollToSection(item.id)}
-                className="text-gray-700 dark:text-gray-300 hover:text-[#00C9A7] dark:hover:text-[#00C9A7] transition-colors px-3 py-2"
+                className="text-gray-700 dark:text-gray-300 hover:text-[#00C9A7] dark:hover:text-[#00C9A7] transition-colors px-3 py-2 font-medium"
               >
                 {item.label}
               </button>
             ))}
-            
-            {/* Notification Toggle Button */}
+
+            {/* Notifications */}
             <button
               onClick={handleToggleNotifications}
               className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
@@ -79,7 +79,7 @@ export default function Navigation({ onToggleNotifications, notificationsEnabled
               )}
             </button>
 
-            {/* Theme Toggle Button */}
+            {/* Theme */}
             <button
               onClick={toggleTheme}
               className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
@@ -89,13 +89,11 @@ export default function Navigation({ onToggleNotifications, notificationsEnabled
             </button>
           </div>
 
-          {/* Mobile Navigation */}
-          <div className="md:hidden flex items-center space-x-4">
-            {/* Notification Toggle Button */}
+          {/* Mobile Buttons */}
+          <div className="md:hidden flex items-center space-x-2">
             <button
               onClick={handleToggleNotifications}
-              className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800"
-              aria-label={notificationsEnabled ? "Disable notifications" : "Enable notifications"}
+              className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700"
             >
               {notificationsEnabled ? (
                 <MessageCircle size={20} className="text-green-500" />
@@ -104,20 +102,16 @@ export default function Navigation({ onToggleNotifications, notificationsEnabled
               )}
             </button>
 
-            {/* Theme Toggle Button */}
             <button
               onClick={toggleTheme}
-              className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800"
-              aria-label="Toggle theme"
+              className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700"
             >
               {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
             </button>
 
-            {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="p-2"
-              aria-label="Toggle menu"
+              className="p-2 text-gray-800 dark:text-gray-200 hover:text-[#00C9A7] transition-colors"
             >
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -125,22 +119,24 @@ export default function Navigation({ onToggleNotifications, notificationsEnabled
         </div>
       </div>
 
-      {/* Mobile Menu */}
-      {isMenuOpen && (
-        <div className="md:hidden bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800">
-          <div className="px-4 py-4 space-y-3">
-            {navItems.map(item => (
-              <button
-                key={item.id}
-                onClick={() => scrollToSection(item.id)}
-                className="block w-full text-left px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
-              >
-                {item.label}
-              </button>
-            ))}
-          </div>
+      {/* Mobile Dropdown Menu */}
+      <div
+        className={`md:hidden bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 overflow-hidden transition-all duration-300 ${
+          isMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+        }`}
+      >
+        <div className="px-4 py-4 space-y-3">
+          {navItems.map(item => (
+            <button
+              key={item.id}
+              onClick={() => scrollToSection(item.id)}
+              className="block w-full text-left px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg font-medium transition-all"
+            >
+              {item.label}
+            </button>
+          ))}
         </div>
-      )}
+      </div>
     </nav>
   );
 }

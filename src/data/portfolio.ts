@@ -1,7 +1,7 @@
 export const personalInfo = {
   name: "Ayush Anupam",
   tagline: "Frontend Developer | UX Designer | Innovator",
-  education: "B.Tech in Artificial Intelligence and Machine Learning",
+  education: "B.Tech in AI & ML",
   school10th: "Indian Public School, Hajipur",
   school12th: "R.B.S College, Hajipur",
   college: "G H Raisoni College of Engineering and Management",
