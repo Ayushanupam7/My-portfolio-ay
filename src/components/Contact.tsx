@@ -27,11 +27,11 @@ export default function Contact() {
       setMobileError('');
     }
 
-    // Send email to yourself
+    // 1️⃣ Send email to yourself
     emailjs
       .send(
-        'service_ea7lxu7', // your service ID
-        'template_kovy7xh', // your template ID
+        'service_ea7lxu7', // your EmailJS service ID
+        'template_kovy7xh', // your EmailJS template for your inbox
         {
           from_name: formData.name,
           from_email: formData.email,
@@ -39,7 +39,7 @@ export default function Contact() {
           subject: formData.subject,
           message: formData.message
         },
-        'NSWm9VjZ0ijsdTVfm' // your public key
+        'NSWm9VjZ0ijsdTVfm' // your EmailJS public key
       )
       .then(() => {
         setStatus('success');
@@ -52,16 +52,17 @@ export default function Contact() {
           setCurrentMessage('none');
         }, 16500);
 
-        // Auto-reply to the sender
+        // 2️⃣ Auto-reply to the user
         emailjs.send(
-          'service_ea7lxu7', // same service ID
-          'template_8s99j3f', // create this template in EmailJS
+          'service_ea7lxu7',           // your EmailJS service ID
+          'template_8s99j3f',        // your EmailJS template for auto-reply
           {
-            to_name: formData.name,
-            to_email: formData.email,
-            reply_message: `Hi ${formData.name},\n\nThanks for reaching out! I received your message and will contact you within a few hours.\n\nBest regards,\nAyush`
+            user_name: formData.name,
+            user_email: formData.email,
+            user_subject: formData.subject || 'Contact Form',
+            user_message: formData.message
           },
-          'NSWm9VjZ0ijsdTVfm' // your public key
+          'NSWm9VjZ0ijsdTVfm'          // your public key
         );
       })
       .catch(() => setStatus('error'));
@@ -75,13 +76,9 @@ export default function Contact() {
   };
 
   return (
-    <section
-      id="contact"
-      className="overflow-x-hidden mt-16 sm:mt-20 py-16 sm:py-20 bg-gray-50 dark:bg-gray-800/50 w-full"
-    >
+    <section id="contact" className="overflow-x-hidden mt-16 sm:mt-20 py-16 sm:py-20 bg-gray-50 dark:bg-gray-800/50 w-full">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-        {/* ---- Heading ---- */}
+        {/* Heading */}
         <div className="text-center mb-12 sm:mb-16">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
             Get In Touch
@@ -92,15 +89,13 @@ export default function Contact() {
           </p>
         </div>
 
-        {/* ---- Main Grid ---- */}
+        {/* Main Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 sm:gap-12">
-
-          {/* ---- Contact Info ---- */}
+          {/* Contact Info */}
           <div className="space-y-6 sm:space-y-8">
             <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4 sm:mb-6">
               Contact Information
             </h3>
-
             <div className="space-y-4">
               {/* Email */}
               <a
@@ -150,7 +145,7 @@ export default function Contact() {
             </div>
           </div>
 
-          {/* ---- Contact Form ---- */}
+          {/* Contact Form */}
           <div>
             <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6">
               {/* Name */}
@@ -166,7 +161,7 @@ export default function Contact() {
                   onChange={handleChange}
                   required
                   className="w-full px-3 sm:px-4 py-3 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-[#00C9A7] outline-none transition-all text-sm sm:text-base"
-                  placeholder="Newton Yadav"
+                  placeholder="Your Name"
                 />
               </div>
 
@@ -183,7 +178,7 @@ export default function Contact() {
                   onChange={handleChange}
                   required
                   className="w-full px-3 sm:px-4 py-3 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-[#00C9A7] outline-none transition-all text-sm sm:text-base"
-                  placeholder="newtonyadav@example.com"
+                  placeholder="yourname@example.com"
                 />
               </div>
 
