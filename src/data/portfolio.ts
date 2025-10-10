@@ -11,16 +11,18 @@ export const personalInfo = {
   year10th: "2020",
   year12th: "2022",
   graduationYear: "2026",
-  goal: "To become a skilled Frontend / Full-Stack Developer with strong design & UX skills, creating impactful digital experiences.",
+  goal:
+    "To become a skilled Frontend / Full-Stack Developer with strong design & UX skills, creating impactful digital experiences.",
   email: "ayushanupamofficial7@gmail.com",
   phone: "+91-XXXXXXXXXX",
   location: "Pune, Maharashtra",
   linkedin: "https://linkedin.com/in/ayushanupam",
   github: "https://github.com/ayushanupam",
   portfolio: "https://ayushanupam.vercel.app",
-  resume: "./src/data/assets/resume.pdf",
-  profileImage: "./src/data/assets/profile.jpeg",
-  about: "Passionate frontend developer with a strong foundation in modern web technologies. I love creating beautiful, responsive, and user-friendly applications. Currently exploring full-stack development while deepening my expertise in React and TypeScript.",
+  resume: "/assets/resume.pdf",
+  profileImage: "/assets/profile.jpeg",
+  about:
+    "Passionate frontend developer with a strong foundation in modern web technologies. I love creating beautiful, responsive, and user-friendly applications. Currently exploring full-stack development while deepening my expertise in React and TypeScript.",
 };
 
 export const skills = {
@@ -28,9 +30,23 @@ export const skills = {
   frontend: ["HTML5", "CSS3", "JavaScript", "React", "Tailwind CSS", "Next.js"],
   backend: ["Node.js", "Express.js", "REST APIs"],
   database: ["PostgreSQL", "MongoDB", "SQLite"],
-  tools: ["Drizzle ORM", "React Router", "Framer Motion", "Git", "GitHub", "VS Code", "Figma"],
+  tools: [
+    "Drizzle ORM",
+    "React Router",
+    "Framer Motion",
+    "Git",
+    "GitHub",
+    "VS Code",
+    "Figma",
+  ],
   libraries: ["React Query", "Zod", "React Hook Form", "Chart.js"],
-  other: ["Data Structures & Algorithms", "UI/UX Design", "Responsive Design", "Web Performance", "SEO"]
+  other: [
+    "Data Structures & Algorithms",
+    "UI/UX Design",
+    "Responsive Design",
+    "Web Performance",
+    "SEO",
+  ],
 };
 
 export const softSkills = [
@@ -41,65 +57,75 @@ export const softSkills = [
   "Team Collaboration",
   "Time Management",
   "Adaptability",
-  "Attention to Detail"
+  "Attention to Detail",
 ];
 
 export const projects = [
   {
     id: "1",
     title: "AY Store - Web App Marketplace",
-    description: "A modern web application store inspired by Play Store UI, featuring app cards, trending sections, categories, modals, dark mode, and secure downloads. Built with vanilla web technologies for optimal performance.",
+    description:
+      "A modern web application store inspired by Play Store UI, featuring app cards, trending sections, categories, modals, dark mode, and secure downloads. Built with vanilla web technologies for optimal performance.",
     techStack: ["HTML5", "CSS3", "JavaScript", "Local Storage API"],
-    imageUrl: "https://images.pexels.com/photos/1092644/pexels-photo-1092644.jpeg?auto=compress&cs=tinysrgb&w=800",
+    imageUrl:
+      "https://images.pexels.com/photos/1092644/pexels-photo-1092644.jpeg?auto=compress&cs=tinysrgb&w=800",
     liveUrl: "https://aystorev3.netlify.app/",
     githubUrl: "https://github.com/ayushanupam/ay-store",
     featured: true,
-    category: "frontend"
+    category: "frontend",
   },
   {
     id: "2",
     title: "Personal Portfolio Website",
-    description: "A responsive portfolio website showcasing my skills, projects, and achievements. Features smooth animations, dark mode toggle, and optimized performance across all devices.",
+    description:
+      "A responsive portfolio website showcasing my skills, projects, and achievements. Features smooth animations, dark mode toggle, and optimized performance across all devices.",
     techStack: ["React", "TypeScript", "Tailwind CSS", "Framer Motion"],
-    imageUrl: "https://images.pexels.com/photos/196644/pexels-photo-196644.jpeg?auto=compress&cs=tinysrgb&w=800",
+    imageUrl:
+      "https://images.pexels.com/photos/196644/pexels-photo-196644.jpeg?auto=compress&cs=tinysrgb&w=800",
     liveUrl: "https://ayushanupamportfolio.netlify.app/",
     githubUrl: "https://github.com/ayushanupam/portfolio-v2",
     featured: true,
-    category: "frontend"
+    category: "frontend",
   },
   {
     id: "3",
     title: "Expense Tracker Pro",
-    description: "A comprehensive financial management application for tracking expenses and savings with intuitive UI, real-time calculations, data visualization, and export capabilities.",
+    description:
+      "A comprehensive financial management application for tracking expenses and savings with intuitive UI, real-time calculations, data visualization, and export capabilities.",
     techStack: ["HTML", "CSS", "JavaScript", "Chart.js", "Local Storage"],
-    imageUrl: "https://images.pexels.com/photos/6289065/pexels-photo-6289065.jpeg?auto=compress&cs=tinysrgb&w=800",
+    imageUrl:
+      "https://images.pexels.com/photos/6289065/pexels-photo-6289065.jpeg?auto=compress&cs=tinysrgb&w=800",
     liveUrl: "https://expencetrackerv4.netlify.app/",
     githubUrl: "https://github.com/ayushanupam/expense-tracker",
     featured: true,
-    category: "frontend"
+    category: "frontend",
   },
   {
     id: "4",
     title: "Study Mania - Learning Platform",
-    description: "Full-stack study management application featuring dashboard, flashcards, study planner, progress analytics, and organized learning modules for students.",
+    description:
+      "Full-stack study management application featuring dashboard, flashcards, study planner, progress analytics, and organized learning modules for students.",
     techStack: ["React", "Express.js", "Drizzle ORM", "SQLite", "Tailwind CSS"],
-    imageUrl: "https://images.pexels.com/photos/159844/cellular-education-classroom-159844.jpeg?auto=compress&cs=tinysrgb&w=800",
+    imageUrl:
+      "https://images.pexels.com/photos/159844/cellular-education-classroom-159844.jpeg?auto=compress&cs=tinysrgb&w=800",
     liveUrl: "https://studymania.vercel.app",
     githubUrl: "https://github.com/ayushanupam/study-mania",
     featured: true,
-    category: "fullstack"
+    category: "fullstack",
   },
   {
     id: "5",
     title: "TaskFlow - Productivity App",
-    description: "A Kanban-style task management application with drag-and-drop functionality, team collaboration features, and real-time updates.",
+    description:
+      "A Kanban-style task management application with drag-and-drop functionality, team collaboration features, and real-time updates.",
     techStack: ["Next.js", "TypeScript", "Prisma", "PostgreSQL", "WebSockets"],
-    imageUrl: "https://images.pexels.com/photos/7376/startup-photos.jpg?auto=compress&cs=tinysrgb&w=800",
+    imageUrl:
+      "https://images.pexels.com/photos/7376/startup-photos.jpg?auto=compress&cs=tinysrgb&w=800",
     liveUrl: "https://taskflow-demo.vercel.app",
     githubUrl: "https://github.com/ayushanupam/taskflow",
     featured: false,
-    category: "fullstack"
-  }
+    category: "fullstack",
+  },
 ];
 
 export const achievements = [
@@ -110,48 +136,39 @@ export const achievements = [
     date: "2025-03-05",
     icon: "award",
     link: "https://www.google.com/",
-    images: [
-      "./src/data/assets/profile.jpeg"
-    ]
+    images: ["/assets/profile.jpeg"],
   },
-
   {
     id: "2",
     title: "Poster Creation Award - National Science Day",
-    description: "Created an award-winning scientific poster on 'AI in Modern Healthcare' that was selected among top 10 entries in the National Science Day celebration.",
+    description:
+      "Created an award-winning scientific poster on 'AI in Modern Healthcare' that was selected among top 10 entries in the National Science Day celebration.",
     date: "2025-02-28",
     category: "recognition",
     icon: "award",
     link: "https://www.google.com/",
-    venue: "College Event"
+    venue: "College Event",
   },
   {
     id: "3",
     title: "Web Development Intern - WeMakeScholars",
-    description: "Completed a 3-month internship focusing on frontend development, student portal enhancements, and implementing responsive design patterns for better user experience.",
+    description:
+      "Completed a 3-month internship focusing on frontend development, student portal enhancements, and implementing responsive design patterns for better user experience.",
     date: "2024-12-01",
     category: "internship",
     icon: "briefcase",
-    duration: "3 months"
+    duration: "3 months",
   },
   {
     id: "4",
     title: "Hackathon Finalist - CodeForGood 2024",
-    description: "Reached finals in a 24-hour hackathon by developing a community service application for local NGOs using React and Node.js.",
+    description:
+      "Reached finals in a 24-hour hackathon by developing a community service application for local NGOs using React and Node.js.",
     date: "2024-08-20",
     category: "competition",
     icon: "code",
-    venue: "Online Hackathon"
+    venue: "Online Hackathon",
   },
-  {
-    id: "5",
-    title: "Hackathon Finalist - CodeForGood 2024",
-    description: "Reached finals in a 24-hour hackathon by developing a community service application for local NGOs using React and Node.js.",
-    date: "2024-08-20",
-    category: "competition",
-    icon: "code",
-    venue: "Online Hackathon"
-  }
 ];
 
 export const certificates = [
@@ -161,8 +178,9 @@ export const certificates = [
     issuer: "Udemy",
     date: "2024-08-15",
     certificateUrl: "#",
-    imageUrl: "https://images.pexels.com/photos/1181534/pexels-photo-1181534.jpeg?auto=compress&cs=tinysrgb&w=800",
-    skills: ["HTML5", "CSS3", "JavaScript", "React", "Node.js"]
+    imageUrl:
+      "https://images.pexels.com/photos/1181534/pexels-photo-1181534.jpeg?auto=compress&cs=tinysrgb&w=800",
+    skills: ["HTML5", "CSS3", "JavaScript", "React", "Node.js"],
   },
   {
     id: "2",
@@ -170,8 +188,9 @@ export const certificates = [
     issuer: "Frontend Masters",
     date: "2024-09-20",
     certificateUrl: "#",
-    imageUrl: "https://images.pexels.com/photos/577585/pexels-photo-577585.jpeg?auto=compress&cs=tinysrgb&w=800",
-    skills: ["React", "TypeScript", "Advanced Patterns"]
+    imageUrl:
+      "https://images.pexels.com/photos/577585/pexels-photo-577585.jpeg?auto=compress&cs=tinysrgb&w=800",
+    skills: ["React", "TypeScript", "Advanced Patterns"],
   },
   {
     id: "3",
@@ -179,8 +198,9 @@ export const certificates = [
     issuer: "Coursera",
     date: "2024-07-10",
     certificateUrl: "#",
-    imageUrl: "https://images.pexels.com/photos/196645/pexels-photo-196645.jpeg?auto=compress&cs=tinysrgb&w=800",
-    skills: ["Figma", "User Research", "Wireframing", "Prototyping"]
+    imageUrl:
+      "https://images.pexels.com/photos/196645/pexels-photo-196645.jpeg?auto=compress&cs=tinysrgb&w=800",
+    skills: ["Figma", "User Research", "Wireframing", "Prototyping"],
   },
   {
     id: "4",
@@ -188,8 +208,9 @@ export const certificates = [
     issuer: "freeCodeCamp",
     date: "2024-06-01",
     certificateUrl: "#",
-    imageUrl: "https://images.pexels.com/photos/546819/pexels-photo-546819.jpeg?auto=compress&cs=tinysrgb&w=800",
-    skills: ["JavaScript", "Algorithms", "Data Structures"]
+    imageUrl:
+      "https://images.pexels.com/photos/546819/pexels-photo-546819.jpeg?auto=compress&cs=tinysrgb&w=800",
+    skills: ["JavaScript", "Algorithms", "Data Structures"],
   },
   {
     id: "5",
@@ -197,9 +218,10 @@ export const certificates = [
     issuer: "Coursera",
     date: "2024-10-15",
     certificateUrl: "#",
-    imageUrl: "https://images.pexels.com/photos/1181263/pexels-photo-1181263.jpeg?auto=compress&cs=tinysrgb&w=800",
-    skills: ["Node.js", "Express.js", "REST APIs", "MongoDB"]
-  }
+    imageUrl:
+      "https://images.pexels.com/photos/1181263/pexels-photo-1181263.jpeg?auto=compress&cs=tinysrgb&w=800",
+    skills: ["Node.js", "Express.js", "REST APIs", "MongoDB"],
+  },
 ];
 
 export const testimonials = [
@@ -209,9 +231,10 @@ export const testimonials = [
     position: "Senior Frontend Developer",
     company: "TechCorp Solutions",
     image: "https://i.pravatar.cc/150?img=5",
-    comment: "Ayush demonstrates exceptional attention to detail in his frontend work. His portfolio projects show a deep understanding of modern web development practices and user experience design.",
+    comment:
+      "Ayush demonstrates exceptional attention to detail in his frontend work. His portfolio projects show a deep understanding of modern web development practices and user experience design.",
     rating: 5,
-    email: "sarah.j@techcorp.com"
+    email: "sarah.j@techcorp.com",
   },
   {
     id: "2",
@@ -219,9 +242,10 @@ export const testimonials = [
     position: "Product Manager",
     company: "InnovateLabs",
     image: "https://i.pravatar.cc/150?img=12",
-    comment: "Impressive problem-solving skills and clean code architecture. I'm interested in collaborating on future projects - Ayush shows great potential for full-stack development.",
+    comment:
+      "Impressive problem-solving skills and clean code architecture. I'm interested in collaborating on future projects - Ayush shows great potential for full-stack development.",
     rating: 5,
-    email: "michael.c@innovatelabs.com"
+    email: "michael.c@innovatelabs.com",
   },
   {
     id: "3",
@@ -229,9 +253,10 @@ export const testimonials = [
     position: "UI/UX Designer",
     company: "DesignStudio Pro",
     image: "https://i.pravatar.cc/150?img=9",
-    comment: "The visual design and user experience in Ayush's projects are outstanding. He has a great eye for aesthetics combined with technical implementation skills.",
+    comment:
+      "The visual design and user experience in Ayush's projects are outstanding. He has a great eye for aesthetics combined with technical implementation skills.",
     rating: 4,
-    email: "emily.d@designstudiopro.com"
+    email: "emily.d@designstudiopro.com",
   },
   {
     id: "4",
@@ -239,9 +264,10 @@ export const testimonials = [
     position: "Tech Lead",
     company: "CodeCraft Inc",
     image: "https://i.pravatar.cc/150?img=13",
-    comment: "Solid foundation in React and modern JavaScript. The Study Mania project particularly showcases good full-stack architecture decisions and clean code organization.",
+    comment:
+      "Solid foundation in React and modern JavaScript. The Study Mania project particularly showcases good full-stack architecture decisions and clean code organization.",
     rating: 5,
-    email: "david.m@codecraft.io"
+    email: "david.m@codecraft.io",
   },
   {
     id: "5",
@@ -249,9 +275,10 @@ export const testimonials = [
     position: "Startup Founder",
     company: "EduTech Ventures",
     image: "https://i.pravatar.cc/150?img=20",
-    comment: "Ayush's expense tracker application demonstrates practical problem-solving and excellent user interface design. The implementation is both functional and visually appealing.",
+    comment:
+      "Ayush's expense tracker application demonstrates practical problem-solving and excellent user interface design. The implementation is both functional and visually appealing.",
     rating: 4,
-    email: "jessica.le@edutech.vc"
+    email: "jessica.le@edutech.vc",
   },
   {
     id: "6",
@@ -259,10 +286,11 @@ export const testimonials = [
     position: "Senior Developer",
     company: "WebSolutions Ltd",
     image: "https://i.pravatar.cc/150?img=33",
-    comment: "Great communication skills and technical knowledge. The portfolio itself is a testament to Ayush's frontend capabilities and understanding of responsive design principles.",
+    comment:
+      "Great communication skills and technical knowledge. The portfolio itself is a testament to Ayush's frontend capabilities and understanding of responsive design principles.",
     rating: 5,
-    email: "alex.t@websolutions.dev"
-  }
+    email: "alex.t@websolutions.dev",
+  },
 ];
 
 export const experience = [
@@ -276,9 +304,9 @@ export const experience = [
       "Developed and maintained responsive web pages using HTML, CSS, and JavaScript",
       "Collaborated with design team to implement UI/UX improvements",
       "Optimized website performance and loading speeds",
-      "Participated in code reviews and agile development processes"
+      "Participated in code reviews and agile development processes",
     ],
-    technologies: ["HTML", "CSS", "JavaScript", "Git", "Figma"]
+    technologies: ["HTML", "CSS", "JavaScript", "Git", "Figma"],
   },
   {
     id: "2",
@@ -290,23 +318,24 @@ export const experience = [
       "Built custom websites and web applications for local businesses",
       "Implemented responsive designs and cross-browser compatibility",
       "Provided technical consulting and maintenance services",
-      "Managed client relationships and project timelines"
+      "Managed client relationships and project timelines",
     ],
-    technologies: ["React", "Tailwind CSS", "JavaScript", "Node.js"]
-  }
+    technologies: ["React", "Tailwind CSS", "JavaScript", "Node.js"],
+  },
 ];
 
 export const education = [
   {
     id: "1",
     degree: "B.Tech in Artificial Intelligence & Machine Learning",
-    institution: "G H Raisoni College of Engineering and Management, Pune",
+    institution:
+      "G H Raisoni College of Engineering and Management, Pune",
     duration: "2022 - 2026",
     grade: "CGPA: 8.65/10 (Till 2nd Year)",
     achievements: [
       "Class Representative for AI/ML Department",
-      "Active participant in coding competitions and tech events"
-    ]
+      "Active participant in coding competitions and tech events",
+    ],
   },
   {
     id: "2",
@@ -316,8 +345,8 @@ export const education = [
     grade: "66%",
     achievements: [
       "Science Stream with Computer Science",
-      "Participated in school science exhibitions"
-    ]
+      "Participated in school science exhibitions",
+    ],
   },
   {
     id: "3",
@@ -327,7 +356,7 @@ export const education = [
     grade: "80%",
     achievements: [
       "School Topper in Computer Science",
-      "Active in extracurricular activities"
-    ]
-  }
+      "Active in extracurricular activities",
+    ],
+  },
 ];
