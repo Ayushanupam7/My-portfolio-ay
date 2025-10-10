@@ -18,8 +18,8 @@ export const personalInfo = {
   linkedin: "https://linkedin.com/in/ayushanupam",
   github: "https://github.com/ayushanupam",
   portfolio: "https://ayushanupam.vercel.app",
-  resume: "./dist/assets/resume.pdf",
-  profileImage: "./dist/assets/profile.jpeg",
+  resume: "./src/data/assets/resume.pdf",
+  profileImage: "./src/data/assets/profile.jpeg",
   about: "Passionate frontend developer with a strong foundation in modern web technologies. I love creating beautiful, responsive, and user-friendly applications. Currently exploring full-stack development while deepening my expertise in React and TypeScript.",
 };
 
@@ -111,7 +111,7 @@ export const achievements = [
     icon: "award",
     link: "https://www.google.com/",
     images: [
-      "./dist/assets/profile.jpeg",
+      "./src/data/assets/profile.jpeg",
       ""
     ]
   },
