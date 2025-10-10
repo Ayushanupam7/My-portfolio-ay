@@ -27,10 +27,11 @@ export default function Contact() {
       setMobileError('');
     }
 
+    // Send email to yourself
     emailjs
       .send(
-        'service_ea7lxu7',
-        'template_kovy7xh',
+        'service_ea7lxu7', // your service ID
+        'template_kovy7xh', // your template ID
         {
           from_name: formData.name,
           from_email: formData.email,
@@ -38,7 +39,7 @@ export default function Contact() {
           subject: formData.subject,
           message: formData.message
         },
-        'NSWm9VjZ0ijsdTVfm'
+        'NSWm9VjZ0ijsdTVfm' // your public key
       )
       .then(() => {
         setStatus('success');
@@ -50,6 +51,18 @@ export default function Contact() {
           setStatus('idle');
           setCurrentMessage('none');
         }, 16500);
+
+        // Auto-reply to the sender
+        emailjs.send(
+          'service_ea7lxu7', // same service ID
+          'template_8s99j3f', // create this template in EmailJS
+          {
+            to_name: formData.name,
+            to_email: formData.email,
+            reply_message: `Hi ${formData.name},\n\nThanks for reaching out! I received your message and will contact you within a few hours.\n\nBest regards,\nAyush`
+          },
+          'NSWm9VjZ0ijsdTVfm' // your public key
+        );
       })
       .catch(() => setStatus('error'));
   };
@@ -65,7 +78,6 @@ export default function Contact() {
     <section
       id="contact"
       className="overflow-x-hidden mt-16 sm:mt-20 py-16 sm:py-20 bg-gray-50 dark:bg-gray-800/50 w-full"
-
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
