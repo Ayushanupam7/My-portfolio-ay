@@ -19,7 +19,7 @@ export const personalInfo = {
   github: "https://github.com/ayushanupam",
   portfolio: "https://ayushanupam.vercel.app",
   resume: "./src/data/assets/resume.pdf",
-  profileImage: "https://media.licdn.com/dms/image/v2/D5603AQE7TMCjsCwaqA/profile-displayphoto-scale_200_200/B56ZgE1XvGHIAY-/0/1752427757660?e=1762992000&v=beta&t=JV3eNpSGen0dUqb0fgnoEZ2o5tB8-72KEgUiVEp2Fyk",
+  profileImage: "./src/data/assets/profile.jpeg",
   about: "Passionate frontend developer with a strong foundation in modern web technologies. I love creating beautiful, responsive, and user-friendly applications. Currently exploring full-stack development while deepening my expertise in React and TypeScript.",
 };
 
