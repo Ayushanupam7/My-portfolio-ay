@@ -226,26 +226,26 @@ export const certificates = [
 
 export const testimonials = [
   {
-    id: "1",
-    name: "Sarah Johnson",
-    position: "Senior Frontend Developer",
-    company: "TechCorp Solutions",
-    image: "https://i.pravatar.cc/150?img=5",
-    comment:
-      "Ayush demonstrates exceptional attention to detail in his frontend work. His portfolio projects show a deep understanding of modern web development practices and user experience design.",
-    rating: 5,
-    email: "sarah.j@techcorp.com",
-  },
-  {
     id: "2",
-    name: "Michael Chen",
-    position: "Product Manager",
-    company: "InnovateLabs",
-    image: "https://i.pravatar.cc/150?img=12",
+    name: "Akarsh Anupam",
+    position: "Student",
+    company: "akarsheditz_",
+    image: "./assets/akarsh.jpg",
     comment:
       "Impressive problem-solving skills and clean code architecture. I'm interested in collaborating on future projects - Ayush shows great potential for full-stack development.",
     rating: 5,
-    email: "michael.c@innovatelabs.com",
+    email: "akarshanupam@gmail.com",
+  },
+  {
+    id: "2",
+    name: "Akarsh Anupam",
+    position: "Student",
+    company: "akarsheditz_",
+    image: "./assets/akarsh.jpg",
+    comment:
+      "Impressive problem-solving skills and clean code architecture. I'm interested in collaborating on future projects - Ayush shows great potential for full-stack development.",
+    rating: 5,
+    email: "akarshanupam@gmail.com",
   },
   {
     id: "3",
