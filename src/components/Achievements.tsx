@@ -150,7 +150,48 @@ function AchievementCard({ achievement, Icon, formatDate }: any) {
 function InfiniteScrollRowWithControls({ children }: { children: React.ReactNode }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
+  const touchStartX = useRef(0);
+  const touchStartY = useRef(0);
+  const isScrollingVertically = useRef(false);
 
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const handleTouchStart = (e: TouchEvent) => {
+      touchStartX.current = e.touches[0].clientX;
+      touchStartY.current = e.touches[0].clientY;
+      isScrollingVertically.current = false;
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      const deltaX = e.touches[0].clientX - touchStartX.current;
+      const deltaY = e.touches[0].clientY - touchStartY.current;
+
+      if (!isScrollingVertically.current && Math.abs(deltaY) > Math.abs(deltaX)) {
+        // Vertical swipe → allow page scroll
+        isScrollingVertically.current = true;
+        return;
+      }
+
+      if (!isScrollingVertically.current) {
+        // Horizontal swipe → scroll container
+        e.preventDefault();
+        container.scrollLeft -= deltaX;
+        touchStartX.current = e.touches[0].clientX;
+      }
+    };
+
+    container.addEventListener('touchstart', handleTouchStart, { passive: true });
+    container.addEventListener('touchmove', handleTouchMove, { passive: false });
+
+    return () => {
+      container.removeEventListener('touchstart', handleTouchStart);
+      container.removeEventListener('touchmove', handleTouchMove);
+    };
+  }, []);
+
+  // Infinite auto scroll
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
@@ -177,10 +218,10 @@ function InfiniteScrollRowWithControls({ children }: { children: React.ReactNode
     <div className="relative">
       <div
         ref={containerRef}
-        className="overflow-x-auto overflow-y-hidden flex gap-4 touch-pan-x snap-x snap-mandatory"
+        className="overflow-x-auto overflow-y-hidden flex gap-4 snap-x snap-mandatory"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        style={{ touchAction: 'pan-x pinch-zoom' }} // ⚡ Fix for mobile vertical scroll
+        style={{ touchAction: 'pan-y pinch-zoom' }} // allow vertical scrolling
       >
         {children}
         {children}
