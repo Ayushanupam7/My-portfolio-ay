@@ -8,8 +8,9 @@ interface Bubble {
   comment: string;
   position: { x: number; y: number };
   delay: number;
-  timestamp: Date;
+  timestamp: Date; // from portfolio.ts
   role: string;
+  email?: string;
   removing?: boolean;
   removeDirection?: 'left' | 'right';
   animationDuration?: number;
@@ -25,6 +26,7 @@ interface TestimonialModalProps {
   onClose: () => void;
 }
 
+// Generate bubble using testimonial data from portfolio.ts
 const generateRandomBubble = (id: number): Bubble => {
   const randomTestimonial = testimonials[Math.floor(Math.random() * testimonials.length)];
   return {
@@ -33,9 +35,10 @@ const generateRandomBubble = (id: number): Bubble => {
     image: randomTestimonial.image,
     role: randomTestimonial.role || "Visitor",
     comment: randomTestimonial.comment,
+    email: randomTestimonial.email,
     position: { x: Math.random() * 100 - 50, y: Math.random() * 200 + 50 },
     delay: Math.random() * 3,
-    timestamp: new Date(),
+    timestamp: new Date(randomTestimonial.timestamp || Date.now()),
   };
 };
 
@@ -44,7 +47,10 @@ function TestimonialModal({ testimonial, isOpen, onClose }: TestimonialModalProp
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <div className="absolute inset-0 bg-black bg-opacity-50 transition-opacity duration-300" onClick={onClose} />
+      <div
+        className="absolute inset-0 bg-black bg-opacity-50 transition-opacity duration-300"
+        onClick={onClose}
+      />
       <div className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-6 mx-4 max-w-md w-full transform animate-scale-in">
         <button
           onClick={onClose}
@@ -56,10 +62,22 @@ function TestimonialModal({ testimonial, isOpen, onClose }: TestimonialModalProp
         </button>
 
         <div className="flex items-center gap-4 mb-6">
-          <img src={testimonial.image} alt={testimonial.name} className="w-16 h-16 rounded-full border-4 border-[#00C9A7]" />
+          <img
+            src={testimonial.image}
+            alt={testimonial.name}
+            className="w-16 h-16 rounded-full border-4 border-[#00C9A7]"
+          />
           <div>
             <h3 className="text-xl font-bold text-gray-900 dark:text-white">{testimonial.name}</h3>
             <p className="text-gray-600 dark:text-gray-300 text-sm">{testimonial.role}</p>
+            {testimonial.email && (
+              <a
+                href={`mailto:${testimonial.email}`}
+                className="text-gray-500 dark:text-gray-400 text-xs mt-1 block truncate hover:underline"
+              >
+                {testimonial.email}
+              </a>
+            )}
           </div>
         </div>
 
@@ -116,7 +134,7 @@ export default function FloatingBubbles({ enabled = true }: FloatingBubblesProps
       if (Math.abs(distance) > 50) {
         const direction = distance > 0 ? 'right' : 'left';
         const elapsed = Date.now() - touchStartTimeRef.current;
-        const speedFactor = Math.min(Math.max(100 / elapsed, 0.5), 3); // faster swipe = faster animation
+        const speedFactor = Math.min(Math.max(100 / elapsed, 0.5), 3);
         const animationDuration = 300 / speedFactor;
 
         setBubbles(prev =>
