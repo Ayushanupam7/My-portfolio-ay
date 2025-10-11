@@ -1,5 +1,5 @@
 import { Heart } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import emailjs from 'emailjs-com';
 
 export default function LikeButton() {
@@ -9,28 +9,69 @@ export default function LikeButton() {
   const [email, setEmail] = useState('');
   const [comment, setComment] = useState('');
   const [message, setMessage] = useState('');
+  const [submitted, setSubmitted] = useState(false);
+  const [likes, setLikes] = useState<number>(1400); // raw likes
+  const [displayLikes, setDisplayLikes] = useState<number>(1400);
 
-  // Load like status from localStorage
+  const likesRef = useRef(likes);
+  likesRef.current = likes;
+
+  // Load liked status and likes from localStorage
   useEffect(() => {
     const likedStatus = localStorage.getItem('portfolioLiked');
     if (likedStatus === 'true') setIsLiked(true);
+
+    const storedLikes = localStorage.getItem('portfolioLikes');
+    if (storedLikes) {
+      setLikes(parseInt(storedLikes));
+      setDisplayLikes(parseInt(storedLikes));
+    }
   }, []);
 
-  // Save like status to localStorage
   useEffect(() => {
     localStorage.setItem('portfolioLiked', isLiked.toString());
+    localStorage.setItem('portfolioLikes', likes.toString());
+  }, [isLiked, likes]);
+
+  // Automatic increment every 5 seconds
+  useEffect(() => {
+    if (!isLiked) return; // only start after liked
+    const interval = setInterval(() => {
+      const newLikes = likesRef.current + 1;
+      animateIncrement(likesRef.current, newLikes);
+      setLikes(newLikes);
+    }, 10000);
+    return () => clearInterval(interval);
   }, [isLiked]);
+
+  // Incremental animation between numbers
+  const animateIncrement = (start: number, end: number) => {
+    let current = start;
+    const stepTime = 100; // show each number quickly
+    const interval = setInterval(() => {
+      if (current < end) {
+        current += 1;
+        setDisplayLikes(current);
+      } else {
+        clearInterval(interval);
+      }
+    }, stepTime);
+  };
 
   const handleLike = () => {
     if (!isLiked) setShowForm(true);
     else {
       setIsLiked(false);
+      const newLikes = likes > 0 ? likes - 1 : 0;
+      setLikes(newLikes);
+      setDisplayLikes(newLikes);
       localStorage.removeItem('portfolioLiked');
       localStorage.removeItem('portfolioLikeData');
     }
   };
 
-  const sendLikeEmail = () => {
+  const sendLikeEmail = async () => {
+    setSubmitted(true);
     const templateParams = {
       user_name: name || 'Anonymous',
       user_email: email || 'Not provided',
@@ -38,52 +79,54 @@ export default function LikeButton() {
       message: 'liked your portfolio!',
     };
 
-    // Send email to portfolio owner
-    emailjs
-      .send(
-        'service_3sw5l5p', // Your EmailJS Service ID
-        'template_b8e79rl', // Template for owner
+    try {
+      await emailjs.send(
+        'service_3sw5l5p',
+        'template_b8e79rl',
         templateParams,
-        'Ckz7LWvdJcPwE0drE' // Public Key
-      )
-      .then(async () => {
-        setMessage('Thanks for liking!');
-        setIsLiked(true);
-        setShowForm(false);
+        'Ckz7LWvdJcPwE0drE'
+      );
 
-        // Save like data to localStorage
-        const likeData = { name, email, comment };
-        localStorage.setItem('portfolioLiked', 'true');
-        localStorage.setItem('portfolioLikeData', JSON.stringify(likeData));
+      setMessage('Thanks for liking!');
+      setIsLiked(true);
+      const newLikes = likes + 1;
+      animateIncrement(likes, newLikes);
+      setLikes(newLikes);
 
-        // Send thank-you email to user if email is provided
-        if (email) {
-          try {
-            await emailjs.send(
-              'service_3sw5l5p',
-              'template_t0qa32l', // Thank-you template ID
-              {
-                user_name: name || 'Friend',
-                user_email: email,
-                user_comment: comment || 'No comment provided.',
-              },
-              'Ckz7LWvdJcPwE0drE'
-            );
-          } catch (error) {
-            console.error('Thank-you email failed:', error);
-          }
+      const likeData = { name, email, comment };
+      localStorage.setItem('portfolioLiked', 'true');
+      localStorage.setItem('portfolioLikeData', JSON.stringify(likeData));
+
+      if (email) {
+        try {
+          await emailjs.send(
+            'service_3sw5l5p',
+            'template_t0qa32l',
+            {
+              user_name: name || 'Friend',
+              user_email: email,
+              user_comment: comment || 'No comment provided.',
+            },
+            'Ckz7LWvdJcPwE0drE'
+          );
+        } catch (error) {
+          console.error('Thank-you email failed:', error);
         }
+      }
 
-        // Reset form
+      setTimeout(() => {
+        setShowForm(false);
         setName('');
         setEmail('');
         setComment('');
-        setTimeout(() => setMessage(''), 3000);
-      })
-      .catch((error) => {
-        console.error('Email error:', error);
-        setMessage('Failed to send. Please try again.');
-      });
+        setMessage('');
+        setSubmitted(false);
+      }, 3000);
+    } catch (error) {
+      console.error('Email error:', error);
+      setMessage('Failed to send. Please try again.');
+      setSubmitted(false);
+    }
   };
 
   const handleCancel = () => {
@@ -91,10 +134,23 @@ export default function LikeButton() {
     setName('');
     setEmail('');
     setComment('');
+    setSubmitted(false);
+  };
+
+  const formatLikes = (num: number) => {
+    if (num >= 1000) return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
+    return num.toString();
   };
 
   return (
     <div className="flex flex-col items-center space-y-2">
+      {/* Likes count above heart (only after liked) */}
+      {isLiked && !showForm && (
+        <p className="text-sm text-gray-700 dark:text-gray-300 mb-1">
+          {displayLikes} Likes
+        </p>
+      )}
+
       {/* Like Button */}
       <button
         onClick={handleLike}
@@ -108,9 +164,13 @@ export default function LikeButton() {
         <Heart size={24} fill={isLiked ? 'currentColor' : 'none'} />
       </button>
 
-      {/* Dialog Box */}
+      {/* Dialog Form */}
       {showForm && (
         <div className="flex flex-col items-center space-y-2 bg-white dark:bg-gray-900 p-4 rounded-lg shadow-lg mt-2 border border-gray-200 dark:border-gray-700">
+          <p className="text-sm text-gray-700 dark:text-gray-300 mb-1">
+            {displayLikes} Likes
+          </p>
+
           <input
             type="text"
             placeholder="Your name (optional)"
@@ -130,14 +190,19 @@ export default function LikeButton() {
             value={comment}
             onChange={(e) => setComment(e.target.value)}
             className="w-64 p-2 border rounded-md text-sm dark:bg-gray-800 dark:text-white"
-            rows="3"
+            rows={3}
           />
           <div className="flex space-x-2 mt-2">
             <button
               onClick={sendLikeEmail}
-              className="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+              disabled={submitted}
+              className={`px-3 py-1 rounded-md ${
+                submitted
+                  ? 'bg-green-500 text-white cursor-not-allowed'
+                  : 'bg-blue-500 text-white hover:bg-blue-600'
+              }`}
             >
-              Submit
+              {submitted ? 'Submitted' : 'Submit'}
             </button>
             <button
               onClick={handleCancel}
@@ -149,7 +214,6 @@ export default function LikeButton() {
         </div>
       )}
 
-      {/* Success/Error Message */}
       {message && <p className="text-sm text-green-500">{message}</p>}
     </div>
   );

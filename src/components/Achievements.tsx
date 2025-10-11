@@ -180,6 +180,7 @@ function InfiniteScrollRowWithControls({ children }: { children: React.ReactNode
         className="overflow-x-auto overflow-y-hidden flex gap-4 touch-pan-x snap-x snap-mandatory"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
+        style={{ touchAction: 'pan-x pinch-zoom' }} // ⚡ Fix for mobile vertical scroll
       >
         {children}
         {children}
@@ -206,7 +207,6 @@ function CertificatesCarousel({ certificates }: any) {
 
   return (
     <div className="relative w-full max-w-6xl mx-auto overflow-hidden">
-      {/* Certificates container */}
       <div
         className="flex transition-transform duration-700 ease-in-out"
         style={{

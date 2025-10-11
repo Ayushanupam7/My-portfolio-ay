@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { testimonials } from '../data/portfolio';
 
 interface Bubble {
@@ -10,6 +10,9 @@ interface Bubble {
   delay: number;
   timestamp: Date;
   role: string;
+  removing?: boolean;
+  removeDirection?: 'left' | 'right';
+  animationDuration?: number;
 }
 
 interface FloatingBubblesProps {
@@ -24,17 +27,13 @@ interface TestimonialModalProps {
 
 const generateRandomBubble = (id: number): Bubble => {
   const randomTestimonial = testimonials[Math.floor(Math.random() * testimonials.length)];
-
   return {
     id,
     name: randomTestimonial.name,
     image: randomTestimonial.image,
     role: randomTestimonial.role || "Visitor",
     comment: randomTestimonial.comment,
-    position: {
-      x: Math.random() * 100 - 50,
-      y: Math.random() * 200 + 50,
-    },
+    position: { x: Math.random() * 100 - 50, y: Math.random() * 200 + 50 },
     delay: Math.random() * 3,
     timestamp: new Date(),
   };
@@ -45,10 +44,7 @@ function TestimonialModal({ testimonial, isOpen, onClose }: TestimonialModalProp
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <div
-        className="absolute inset-0 bg-black bg-opacity-50 transition-opacity duration-300"
-        onClick={onClose}
-      />
+      <div className="absolute inset-0 bg-black bg-opacity-50 transition-opacity duration-300" onClick={onClose} />
       <div className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-6 mx-4 max-w-md w-full transform animate-scale-in">
         <button
           onClick={onClose}
@@ -60,11 +56,7 @@ function TestimonialModal({ testimonial, isOpen, onClose }: TestimonialModalProp
         </button>
 
         <div className="flex items-center gap-4 mb-6">
-          <img
-            src={testimonial.image}
-            alt={testimonial.name}
-            className="w-16 h-16 rounded-full border-4 border-[#00C9A7]"
-          />
+          <img src={testimonial.image} alt={testimonial.name} className="w-16 h-16 rounded-full border-4 border-[#00C9A7]" />
           <div>
             <h3 className="text-xl font-bold text-gray-900 dark:text-white">{testimonial.name}</h3>
             <p className="text-gray-600 dark:text-gray-300 text-sm">{testimonial.role}</p>
@@ -100,6 +92,9 @@ export default function FloatingBubbles({ enabled = true }: FloatingBubblesProps
   const [selectedTestimonial, setSelectedTestimonial] = useState<Bubble | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const touchStartXRef = useRef(0);
+  const touchStartTimeRef = useRef(0);
+
   const handleBubbleClick = (bubble: Bubble) => {
     setSelectedTestimonial(bubble);
     setIsModalOpen(true);
@@ -110,26 +105,38 @@ export default function FloatingBubbles({ enabled = true }: FloatingBubblesProps
     setTimeout(() => setSelectedTestimonial(null), 300);
   };
 
-  // Swipe handling
   const handleTouchStart = (e: React.TouchEvent, bubbleId: number) => {
-    const touchStartX = e.touches[0].clientX;
+    touchStartXRef.current = e.touches[0].clientX;
+    touchStartTimeRef.current = Date.now();
 
     const handleTouchMove = (moveEvent: TouchEvent) => {
       const touchEndX = moveEvent.touches[0].clientX;
-      if (Math.abs(touchEndX - touchStartX) > 50) {
-        // Remove bubble if swipe distance > 50px
-        setBubbles(prev => prev.filter(b => b.id !== bubbleId));
+      const distance = touchEndX - touchStartXRef.current;
+
+      if (Math.abs(distance) > 50) {
+        const direction = distance > 0 ? 'right' : 'left';
+        const elapsed = Date.now() - touchStartTimeRef.current;
+        const speedFactor = Math.min(Math.max(100 / elapsed, 0.5), 3); // faster swipe = faster animation
+        const animationDuration = 300 / speedFactor;
+
+        setBubbles(prev =>
+          prev.map(b => b.id === bubbleId ? { ...b, removing: true, removeDirection: direction, animationDuration } : b)
+        );
+
         window.removeEventListener('touchmove', handleTouchMove);
+
+        setTimeout(() => {
+          setBubbles(prev => prev.filter(b => b.id !== bubbleId));
+        }, animationDuration);
       }
     };
-
-    window.addEventListener('touchmove', handleTouchMove);
 
     const handleTouchEnd = () => {
       window.removeEventListener('touchmove', handleTouchMove);
       window.removeEventListener('touchend', handleTouchEnd);
     };
 
+    window.addEventListener('touchmove', handleTouchMove);
     window.addEventListener('touchend', handleTouchEnd);
   };
 
@@ -142,18 +149,14 @@ export default function FloatingBubbles({ enabled = true }: FloatingBubblesProps
 
   useEffect(() => {
     if (!enabled) return setBubbles([]);
-
-    const initialBubbles = Array.from({ length: 1 }, (_, i) => generateRandomBubble(i));
-    setBubbles(initialBubbles);
-
+    setBubbles([generateRandomBubble(0)]);
     const interval = setInterval(() => {
-      setBubbles((prev) => {
+      setBubbles(prev => {
         const latest = prev.slice(-2);
         latest.push(generateRandomBubble(Date.now()));
         return latest.length > 2 ? latest.slice(-2) : latest;
       });
     }, 10000);
-
     return () => clearInterval(interval);
   }, [enabled]);
 
@@ -165,32 +168,31 @@ export default function FloatingBubbles({ enabled = true }: FloatingBubblesProps
         {bubbles.map((bubble) => (
           <div
             key={bubble.id}
-            className="absolute animate-float-up opacity-0"
+            className={`absolute animate-float-up opacity-0 transition-transform duration-300 ${
+              bubble.removing
+                ? bubble.removeDirection === 'left'
+                  ? '-translate-x-32 opacity-0'
+                  : 'translate-x-32 opacity-0'
+                : ''
+            }`}
             style={{
               left: `${bubble.position.x}px`,
               animationDelay: `${bubble.delay}s`,
               animationDuration: '20s',
+              transitionDuration: bubble.animationDuration ? `${bubble.animationDuration}ms` : '300ms',
             }}
-            onTouchStart={(e) => handleTouchStart(e, bubble.id)} // swipe-to-remove
+            onTouchStart={(e) => handleTouchStart(e, bubble.id)}
           >
             <div
               className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-2 sm:p-3 mb-3 pointer-events-auto transform hover:scale-105 transition-transform duration-300 border border-gray-200 dark:border-gray-700 max-w-[150px] sm:max-w-[220px] cursor-pointer hover:shadow-xl active:scale-95"
               onClick={() => handleBubbleClick(bubble)}
             >
               <div className="flex items-start gap-1 sm:gap-2">
-                <img
-                  src={bubble.image}
-                  alt={bubble.name}
-                  className="w-5 h-5 sm:w-8 sm:h-8 rounded-full border border-[#00C9A7] flex-shrink-0"
-                />
+                <img src={bubble.image} alt={bubble.name} className="w-5 h-5 sm:w-8 sm:h-8 rounded-full border border-[#00C9A7] flex-shrink-0" />
                 <div className="flex-1 min-w-0">
-                  <p className="font-semibold text-[10px] sm:text-xs text-gray-900 dark:text-white truncate">
-                    {bubble.name}
-                  </p>
+                  <p className="font-semibold text-[10px] sm:text-xs text-gray-900 dark:text-white truncate">{bubble.name}</p>
                   <p className="text-[8px] sm:text-[9px] text-gray-400 mt-0.5 truncate">{bubble.role}</p>
-                  <p className="text-[9px] sm:text-[10px] text-gray-600 dark:text-gray-300 mt-0.5 break-words line-clamp-2">
-                    {bubble.comment}
-                  </p>
+                  <p className="text-[9px] sm:text-[10px] text-gray-600 dark:text-gray-300 mt-0.5 break-words line-clamp-2">{bubble.comment}</p>
                 </div>
               </div>
             </div>

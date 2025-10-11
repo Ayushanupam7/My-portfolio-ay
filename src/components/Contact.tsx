@@ -15,6 +15,7 @@ export default function Contact() {
   const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [currentMessage, setCurrentMessage] = useState<'none' | 'first' | 'second'>('none');
   const [mobileError, setMobileError] = useState('');
+  const [submitted, setSubmitted] = useState(false); // For button state
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,11 +28,13 @@ export default function Contact() {
       setMobileError('');
     }
 
-    // 1️⃣ Send email to yourself
+    setSubmitted(true); // Change button to submitted state
+
+    // Send email to yourself
     emailjs
       .send(
-        'service_ea7lxu7', // your EmailJS service ID
-        'template_kovy7xh', // your EmailJS template for your inbox
+        'service_ea7lxu7',
+        'template_kovy7xh',
         {
           from_name: formData.name,
           from_email: formData.email,
@@ -39,7 +42,7 @@ export default function Contact() {
           subject: formData.subject,
           message: formData.message
         },
-        'NSWm9VjZ0ijsdTVfm' // your EmailJS public key
+        'NSWm9VjZ0ijsdTVfm'
       )
       .then(() => {
         setStatus('success');
@@ -50,22 +53,28 @@ export default function Contact() {
         setTimeout(() => {
           setStatus('idle');
           setCurrentMessage('none');
+          setSubmitted(false); // Reset button after a while
         }, 16500);
 
-        // 2️⃣ Auto-reply to the user
-        emailjs.send(
-          'service_ea7lxu7',           // your EmailJS service ID
-          'template_8s99j3f',        // your EmailJS template for auto-reply
-          {
-            user_name: formData.name,
-            user_email: formData.email,
-            user_subject: formData.subject || 'Contact Form',
-            user_message: formData.message
-          },
-          'NSWm9VjZ0ijsdTVfm'          // your public key
-        );
+        // Auto-reply to the user
+        if (formData.email) {
+          emailjs.send(
+            'service_ea7lxu7',
+            'template_8s99j3f',
+            {
+              user_name: formData.name,
+              user_email: formData.email,
+              user_subject: formData.subject || 'Contact Form',
+              user_message: formData.message
+            },
+            'NSWm9VjZ0ijsdTVfm'
+          );
+        }
       })
-      .catch(() => setStatus('error'));
+      .catch(() => {
+        setStatus('error');
+        setSubmitted(false); // Reset button if error
+      });
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -97,11 +106,7 @@ export default function Contact() {
               Contact Information
             </h3>
             <div className="space-y-4">
-              {/* Email */}
-              <a
-                href={`mailto:${personalInfo.email}`}
-                className="flex items-center gap-4 p-4 sm:p-5 bg-white dark:bg-gray-900 rounded-xl hover:shadow-lg transition-all group"
-              >
+              <a href={`mailto:${personalInfo.email}`} className="flex items-center gap-4 p-4 sm:p-5 bg-white dark:bg-gray-900 rounded-xl hover:shadow-lg transition-all group">
                 <div className="p-3 bg-gradient-to-br from-[#00C9A7] to-[#3B82F6] rounded-lg group-hover:scale-110 transition-transform">
                   <Mail className="text-white" size={22} />
                 </div>
@@ -111,13 +116,7 @@ export default function Contact() {
                 </div>
               </a>
 
-              {/* LinkedIn */}
-              <a
-                href={personalInfo.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-4 p-4 sm:p-5 bg-white dark:bg-gray-900 rounded-xl hover:shadow-lg transition-all group"
-              >
+              <a href={personalInfo.linkedin} target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 p-4 sm:p-5 bg-white dark:bg-gray-900 rounded-xl hover:shadow-lg transition-all group">
                 <div className="p-3 bg-gradient-to-br from-[#3B82F6] to-[#00C9A7] rounded-lg group-hover:scale-110 transition-transform">
                   <Linkedin className="text-white" size={22} />
                 </div>
@@ -127,13 +126,7 @@ export default function Contact() {
                 </div>
               </a>
 
-              {/* GitHub */}
-              <a
-                href={personalInfo.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-4 p-4 sm:p-5 bg-white dark:bg-gray-900 rounded-xl hover:shadow-lg transition-all group"
-              >
+              <a href={personalInfo.github} target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 p-4 sm:p-5 bg-white dark:bg-gray-900 rounded-xl hover:shadow-lg transition-all group">
                 <div className="p-3 bg-gradient-to-br from-[#00C9A7] to-[#3B82F6] rounded-lg group-hover:scale-110 transition-transform">
                   <Github className="text-white" size={22} />
                 </div>
@@ -148,98 +141,43 @@ export default function Contact() {
           {/* Contact Form */}
           <div>
             <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6">
-              {/* Name */}
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Name <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-3 sm:px-4 py-3 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-[#00C9A7] outline-none transition-all text-sm sm:text-base"
-                  placeholder="Your Name"
-                />
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Name <span className="text-red-500">*</span></label>
+                <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} required className="w-full px-3 sm:px-4 py-3 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-[#00C9A7] outline-none transition-all text-sm sm:text-base" placeholder="Your Name" />
               </div>
 
-              {/* Email */}
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Email <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-3 sm:px-4 py-3 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-[#00C9A7] outline-none transition-all text-sm sm:text-base"
-                  placeholder="yourname@example.com"
-                />
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email <span className="text-red-500">*</span></label>
+                <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required className="w-full px-3 sm:px-4 py-3 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-[#00C9A7] outline-none transition-all text-sm sm:text-base" placeholder="yourname@example.com" />
               </div>
 
-              {/* Mobile */}
               <div>
-                <label htmlFor="mobile" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Mobile Number
-                </label>
-                <input
-                  type="tel"
-                  id="mobile"
-                  name="mobile"
-                  value={formData.mobile}
-                  onChange={handleChange}
-                  pattern="[0-9]{10}"
-                  className="w-full px-3 sm:px-4 py-3 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-[#00C9A7] outline-none transition-all text-sm sm:text-base"
-                  placeholder="9876543210"
-                />
+                <label htmlFor="mobile" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Mobile Number</label>
+                <input type="tel" id="mobile" name="mobile" value={formData.mobile} onChange={handleChange} pattern="[0-9]{10}" className="w-full px-3 sm:px-4 py-3 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-[#00C9A7] outline-none transition-all text-sm sm:text-base" placeholder="9876543210" />
                 {mobileError && <p className="text-red-500 text-xs sm:text-sm mt-1">{mobileError}</p>}
               </div>
 
-              {/* Subject */}
               <div>
-                <label htmlFor="subject" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Subject
-                </label>
-                <input
-                  type="text"
-                  id="subject"
-                  name="subject"
-                  value={formData.subject}
-                  onChange={handleChange}
-                  className="w-full px-3 sm:px-4 py-3 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-[#00C9A7] outline-none transition-all text-sm sm:text-base"
-                  placeholder="Project Inquiry, Collaboration, etc."
-                />
+                <label htmlFor="subject" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Subject</label>
+                <input type="text" id="subject" name="subject" value={formData.subject} onChange={handleChange} className="w-full px-3 sm:px-4 py-3 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-[#00C9A7] outline-none transition-all text-sm sm:text-base" placeholder="Project Inquiry, Collaboration, etc." />
               </div>
 
-              {/* Message */}
               <div>
-                <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Message <span className="text-red-500">*</span>
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  value={formData.message}
-                  onChange={handleChange}
-                  required
-                  rows={5}
-                  className="w-full px-3 sm:px-4 py-3 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-[#00C9A7] outline-none transition-all resize-none text-sm sm:text-base"
-                  placeholder="Tell me about your project..."
-                />
+                <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Message <span className="text-red-500">*</span></label>
+                <textarea id="message" name="message" value={formData.message} onChange={handleChange} required rows={5} className="w-full px-3 sm:px-4 py-3 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-[#00C9A7] outline-none transition-all resize-none text-sm sm:text-base" placeholder="Tell me about your project..." />
               </div>
 
               {/* Submit Button */}
               <button
                 type="submit"
-                className="w-full px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-[#00C9A7] to-[#3B82F6] text-white rounded-lg font-semibold hover:shadow-lg hover:scale-[1.02] transition-all duration-300 flex items-center justify-center gap-2 text-sm sm:text-base"
+                disabled={submitted}
+                className={`w-full px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold flex items-center justify-center gap-2 text-sm sm:text-base transition-all duration-300 ${
+                  submitted
+                    ? 'bg-green-500 text-white cursor-not-allowed'
+                    : 'bg-gradient-to-r from-[#00C9A7] to-[#3B82F6] text-white hover:shadow-lg hover:scale-[1.02]'
+                }`}
               >
-                <Send size={18} />
-                Send Message
+                {submitted ? 'Message Sent' : <><Send size={18} /> Send Message</>}
               </button>
 
               {/* Status Messages */}
