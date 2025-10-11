@@ -8,12 +8,14 @@ interface Bubble {
   comment: string;
   position: { x: number; y: number };
   delay: number;
-  timestamp: Date; // from portfolio.ts
+  timestamp: Date;
   role: string;
   email?: string;
   removing?: boolean;
   removeDirection?: 'left' | 'right';
   animationDuration?: number;
+  dragX?: number;
+  dragging?: boolean;
 }
 
 interface FloatingBubblesProps {
@@ -26,7 +28,6 @@ interface TestimonialModalProps {
   onClose: () => void;
 }
 
-// Generate bubble using testimonial data from portfolio.ts
 const generateRandomBubble = (id: number): Bubble => {
   const randomTestimonial = testimonials[Math.floor(Math.random() * testimonials.length)];
   return {
@@ -110,9 +111,6 @@ export default function FloatingBubbles({ enabled = true }: FloatingBubblesProps
   const [selectedTestimonial, setSelectedTestimonial] = useState<Bubble | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const touchStartXRef = useRef(0);
-  const touchStartTimeRef = useRef(0);
-
   const handleBubbleClick = (bubble: Bubble) => {
     setSelectedTestimonial(bubble);
     setIsModalOpen(true);
@@ -123,39 +121,38 @@ export default function FloatingBubbles({ enabled = true }: FloatingBubblesProps
     setTimeout(() => setSelectedTestimonial(null), 300);
   };
 
+  // Touch/drag handlers
   const handleTouchStart = (e: React.TouchEvent, bubbleId: number) => {
-    touchStartXRef.current = e.touches[0].clientX;
-    touchStartTimeRef.current = Date.now();
+    const touchX = e.touches[0].clientX;
+    setBubbles(prev => prev.map(b => b.id === bubbleId ? { ...b, dragX: touchX, dragging: true } : b));
+  };
 
-    const handleTouchMove = (moveEvent: TouchEvent) => {
-      const touchEndX = moveEvent.touches[0].clientX;
-      const distance = touchEndX - touchStartXRef.current;
-
-      if (Math.abs(distance) > 50) {
-        const direction = distance > 0 ? 'right' : 'left';
-        const elapsed = Date.now() - touchStartTimeRef.current;
-        const speedFactor = Math.min(Math.max(100 / elapsed, 0.5), 3);
-        const animationDuration = 300 / speedFactor;
-
-        setBubbles(prev =>
-          prev.map(b => b.id === bubbleId ? { ...b, removing: true, removeDirection: direction, animationDuration } : b)
-        );
-
-        window.removeEventListener('touchmove', handleTouchMove);
-
-        setTimeout(() => {
-          setBubbles(prev => prev.filter(b => b.id !== bubbleId));
-        }, animationDuration);
+  const handleTouchMove = (e: React.TouchEvent, bubbleId: number) => {
+    const currentX = e.touches[0].clientX;
+    setBubbles(prev => prev.map(b => {
+      if (b.id === bubbleId && b.dragging && b.dragX !== undefined) {
+        return { ...b, dragX: currentX - b.dragX };
       }
-    };
+      return b;
+    }));
+  };
 
-    const handleTouchEnd = () => {
-      window.removeEventListener('touchmove', handleTouchMove);
-      window.removeEventListener('touchend', handleTouchEnd);
-    };
-
-    window.addEventListener('touchmove', handleTouchMove);
-    window.addEventListener('touchend', handleTouchEnd);
+  const handleTouchEnd = (_e: React.TouchEvent, bubbleId: number) => {
+    setBubbles(prev => prev.map(b => {
+      if (b.id === bubbleId && b.dragging) {
+        const threshold = 50; // px to remove
+        if (b.dragX && Math.abs(b.dragX) > threshold) {
+          const direction = b.dragX > 0 ? 'right' : 'left';
+          const animationDuration = 300;
+          setTimeout(() => {
+            setBubbles(curr => curr.filter(bb => bb.id !== bubbleId));
+          }, animationDuration);
+          return { ...b, removing: true, removeDirection: direction, animationDuration, dragging: false, dragX: 0 };
+        }
+        return { ...b, dragging: false, dragX: 0 };
+      }
+      return b;
+    }));
   };
 
   useEffect(() => {
@@ -195,11 +192,14 @@ export default function FloatingBubbles({ enabled = true }: FloatingBubblesProps
             }`}
             style={{
               left: `${bubble.position.x}px`,
+              transform: bubble.dragX ? `translateX(${bubble.dragX}px)` : undefined,
               animationDelay: `${bubble.delay}s`,
               animationDuration: '20s',
               transitionDuration: bubble.animationDuration ? `${bubble.animationDuration}ms` : '300ms',
             }}
             onTouchStart={(e) => handleTouchStart(e, bubble.id)}
+            onTouchMove={(e) => handleTouchMove(e, bubble.id)}
+            onTouchEnd={(e) => handleTouchEnd(e, bubble.id)}
           >
             <div
               className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-2 sm:p-3 mb-3 pointer-events-auto transform hover:scale-105 transition-transform duration-300 border border-gray-200 dark:border-gray-700 max-w-[150px] sm:max-w-[220px] cursor-pointer hover:shadow-xl active:scale-95"
