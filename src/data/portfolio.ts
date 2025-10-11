@@ -17,7 +17,7 @@ export const personalInfo = {
   phone: "+91-XXXXXXXXXX",
   location: "Pune, Maharashtra",
   linkedin: "https://linkedin.com/in/ayushanupam",
-  github: "https://github.com/ayushanupam",
+  github: "https://github.com/Ayushanupam7",
   portfolio: "https://ayushanupam.vercel.app",
   resume: "/assets/resume.pdf",
   profileImage: "/assets/profile.jpeg",
