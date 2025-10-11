@@ -16,8 +16,10 @@ export const personalInfo = {
   email: "ayushanupamofficial7@gmail.com",
   phone: "+91-XXXXXXXXXX",
   location: "Pune, Maharashtra",
-  linkedin: "https://linkedin.com/in/ayushanupam",
+  linkedin: "https://www.linkedin.com/in/ayush-anupam-shrivastava/",
   github: "https://github.com/Ayushanupam7",
+  instagram: "https://www.instagram.com/_ayushanupam_7/#",
+  twitter:" https://x.com/Ayushanupam77",
   portfolio: "https://ayushanupam.vercel.app",
   resume: "/assets/resume.pdf",
   profileImage: "/assets/profile.jpeg",
@@ -68,9 +70,9 @@ export const projects = [
       "A modern web application store inspired by Play Store UI, featuring app cards, trending sections, categories, modals, dark mode, and secure downloads. Built with vanilla web technologies for optimal performance.",
     techStack: ["HTML5", "CSS3", "JavaScript", "Local Storage API"],
     imageUrl:
-      "https://images.pexels.com/photos/1092644/pexels-photo-1092644.jpeg?auto=compress&cs=tinysrgb&w=800",
-    liveUrl: "https://aystorev3.netlify.app/",
-    githubUrl: "https://github.com/ayushanupam/ay-store",
+      "./assets/aystore.png",
+    liveUrl: "https://aystore.netlify.app/",
+    githubUrl: "https://github.com/Ayushanupam7/aystore.git",
     featured: true,
     category: "frontend",
   },
@@ -81,9 +83,9 @@ export const projects = [
       "A responsive portfolio website showcasing my skills, projects, and achievements. Features smooth animations, dark mode toggle, and optimized performance across all devices.",
     techStack: ["React", "TypeScript", "Tailwind CSS", "Framer Motion"],
     imageUrl:
-      "https://images.pexels.com/photos/196644/pexels-photo-196644.jpeg?auto=compress&cs=tinysrgb&w=800",
-    liveUrl: "https://ayushanupamportfolio.netlify.app/",
-    githubUrl: "https://github.com/ayushanupam/portfolio-v2",
+      "./assets/portfolio.png",
+    liveUrl: "https://ayushanupam.netlify.app/",
+    githubUrl: "https://github.com/Ayushanupam7/My-portfolio-ay.git",
     featured: true,
     category: "frontend",
   },
@@ -94,9 +96,9 @@ export const projects = [
       "A comprehensive financial management application for tracking expenses and savings with intuitive UI, real-time calculations, data visualization, and export capabilities.",
     techStack: ["HTML", "CSS", "JavaScript", "Chart.js", "Local Storage"],
     imageUrl:
-      "https://images.pexels.com/photos/6289065/pexels-photo-6289065.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "./assets/expence.png",
     liveUrl: "https://expencetrackerv4.netlify.app/",
-    githubUrl: "https://github.com/ayushanupam/expense-tracker",
+    githubUrl: "https://github.com/Ayushanupam7/Personal-Expence-Meter.git",
     featured: true,
     category: "frontend",
   },
@@ -108,24 +110,24 @@ export const projects = [
     techStack: ["React", "Express.js", "Drizzle ORM", "SQLite", "Tailwind CSS"],
     imageUrl:
       "https://images.pexels.com/photos/159844/cellular-education-classroom-159844.jpeg?auto=compress&cs=tinysrgb&w=800",
-    liveUrl: "https://studymania.vercel.app",
-    githubUrl: "https://github.com/ayushanupam/study-mania",
+    
+    githubUrl: "https://github.com/Ayushanupam7/Study-Mania",
     featured: true,
     category: "fullstack",
   },
   {
-    id: "5",
-    title: "TaskFlow - Productivity App",
-    description:
-      "A Kanban-style task management application with drag-and-drop functionality, team collaboration features, and real-time updates.",
-    techStack: ["Next.js", "TypeScript", "Prisma", "PostgreSQL", "WebSockets"],
-    imageUrl:
-      "https://images.pexels.com/photos/7376/startup-photos.jpg?auto=compress&cs=tinysrgb&w=800",
-    liveUrl: "https://taskflow-demo.vercel.app",
-    githubUrl: "https://github.com/ayushanupam/taskflow",
-    featured: false,
-    category: "fullstack",
-  },
+  id: "5",
+  title: "🛡️ Smart Mask, Age & Gender Detection with Object Recognition",
+  description:
+    "A real-time AI-based surveillance system using computer vision that detects faces, classifies mask status 😷 or ❌, estimates age and gender, and recognizes objects. It features an Info Board displaying live stats (person count, details, date/time), a warning banner for no-mask alerts, auto snapshot capture, beep sound for compliance, and auto/manual video recording functionality.",
+  techStack: ["OpenCV", "TensorFlow", "Python", "Deep Learning", "Computer Vision"],
+  imageUrl: "./assets/maskdetection.jpg",
+  liveUrl: "", // 🔴 No live link, will show "Working on it"
+  githubUrl: "https://github.com/Ayushanupam7/Mask-Detction",
+  featured: false,
+  category: "AI/ML",
+}
+
 ];
 
 export const achievements = [

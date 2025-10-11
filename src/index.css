@@ -317,3 +317,51 @@
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+/* Marquee Animation */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Wrapper with fade effect */
+.marquee-wrapper {
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
+  
+  
+}
+
+/* Animated text */
+.animate-marquee {
+  display: inline-block;
+  white-space: nowrap;
+  animation: marquee 10s linear infinite;
+  animation-delay: 1s;
+}
+
+/* Duplicate text for seamless scroll */
+.animate-marquee span {
+  display: inline-block;
+  padding-right: 2rem;
+}
+
+/* Italic and smaller text is already applied via Tailwind classes */
+
+/* Slower on mobile */
+@media (max-width: 768px) {
+  .animate-marquee {
+    animation-duration: 22s;
+  }
+}
+
+/* Pause on hover */
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
