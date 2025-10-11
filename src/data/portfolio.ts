@@ -145,7 +145,7 @@ export const achievements = [
     date: "2025-03-05",
     icon: "award",
     link: "https://www.google.com/",
-    images: ["https://media.licdn.com/dms/image/v2/D5622AQEW3e00IsYxHQ/feedshare-shrink_1280/B56ZVBc8XIHEAk-/0/1740559868365?e=1762992000&v=beta&t=qA6ZfQ0XyK5pvXNsiz97dDNKVWwBTNV17aCoLTAy1xM"],
+    images: ["https://media.licdn.com/dms/image/v2/D5622AQEW3e00IsYxHQ/feedshare-shrink_1280/B56ZVBc8XIHEAk-/0/1740559868365?e=1762992000&v=beta&t=qA6ZfQ0XyK5pvXNsiz97dDNKVWwBTNV17aCoLTAy1xM"]
   },
   {
     id: 2,
