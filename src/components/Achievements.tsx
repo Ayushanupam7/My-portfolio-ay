@@ -37,7 +37,7 @@ export default function Achievements() {
           <h3 className="text-3xl font-bold text-gray-900 dark:text-white mb-8 text-center">
             Achievements
           </h3>
-          <InfiniteScrollRowWithControls>
+          <SwipeableRow>
             {achievements.map((achievement) => {
               const Icon = getIcon(achievement.icon);
               return (
@@ -49,7 +49,7 @@ export default function Achievements() {
                 />
               );
             })}
-          </InfiniteScrollRowWithControls>
+          </SwipeableRow>
         </div>
 
         {/* Certificates Section */}
@@ -57,7 +57,7 @@ export default function Achievements() {
           <h3 className="text-3xl font-bold text-gray-900 dark:text-white mb-10 text-center">
             Certificates
           </h3>
-          <CertificatesCarousel certificates={certificates} />
+          <SwipeableCertificates certificates={certificates} />
         </div>
       </div>
     </section>
@@ -65,7 +65,7 @@ export default function Achievements() {
 }
 
 // ==============================
-// 🖼️ AchievementCard Component
+// Achievement Card
 // ==============================
 function AchievementCard({ achievement, Icon, formatDate }: any) {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -145,159 +145,197 @@ function AchievementCard({ achievement, Icon, formatDate }: any) {
 }
 
 // ==============================
-// 🌀 InfiniteScrollRowWithControls Component
+// Swipeable Row (Achievements) with 5s delayed ping-pong scroll
 // ==============================
-function InfiniteScrollRowWithControls({ children }: { children: React.ReactNode }) {
+function SwipeableRow({ children }: { children: React.ReactNode }) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [isHovered, setIsHovered] = useState(false);
+  const [paused, setPaused] = useState(false);
+  const [direction, setDirection] = useState(1);
+  const scrollAmount = 1;
+  const animationFrameId = useRef<number>();
+  const resumeTimeout = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const step = () => {
+      if (!container || paused) {
+        animationFrameId.current = requestAnimationFrame(step);
+        return;
+      }
+
+      container.scrollLeft += scrollAmount * direction;
+
+      if (container.scrollLeft + container.clientWidth >= container.scrollWidth) {
+        setDirection(-1);
+      } else if (container.scrollLeft <= 0) {
+        setDirection(1);
+      }
+
+      animationFrameId.current = requestAnimationFrame(step);
+    };
+
+    animationFrameId.current = requestAnimationFrame(step);
+
+    return () => cancelAnimationFrame(animationFrameId.current!);
+  }, [paused, direction]);
+
+  const handlePause = () => {
+    setPaused(true);
+    if (resumeTimeout.current) clearTimeout(resumeTimeout.current);
+  };
+
+  const handleResumeWithDelay = () => {
+    if (resumeTimeout.current) clearTimeout(resumeTimeout.current);
+    resumeTimeout.current = setTimeout(() => setPaused(false), 5000);
+  };
+
   const touchStartX = useRef(0);
-  const touchStartY = useRef(0);
-  const isScrollingVertically = useRef(false);
+  const isDragging = useRef(false);
 
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    isDragging.current = true;
+    handlePause();
+  };
 
-    const handleTouchStart = (e: TouchEvent) => {
-      touchStartX.current = e.touches[0].clientX;
-      touchStartY.current = e.touches[0].clientY;
-      isScrollingVertically.current = false;
-    };
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!isDragging.current || !containerRef.current) return;
+    const deltaX = e.touches[0].clientX - touchStartX.current;
+    containerRef.current.scrollLeft -= deltaX;
+    touchStartX.current = e.touches[0].clientX;
+  };
 
-    const handleTouchMove = (e: TouchEvent) => {
-      const deltaX = e.touches[0].clientX - touchStartX.current;
-      const deltaY = e.touches[0].clientY - touchStartY.current;
-
-      if (!isScrollingVertically.current && Math.abs(deltaY) > Math.abs(deltaX)) {
-        // Vertical swipe → allow page scroll
-        isScrollingVertically.current = true;
-        return;
-      }
-
-      if (!isScrollingVertically.current) {
-        // Horizontal swipe → scroll container
-        e.preventDefault();
-        container.scrollLeft -= deltaX;
-        touchStartX.current = e.touches[0].clientX;
-      }
-    };
-
-    container.addEventListener('touchstart', handleTouchStart, { passive: true });
-    container.addEventListener('touchmove', handleTouchMove, { passive: false });
-
-    return () => {
-      container.removeEventListener('touchstart', handleTouchStart);
-      container.removeEventListener('touchmove', handleTouchMove);
-    };
-  }, []);
-
-  // Infinite auto scroll
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-    let scrollAmount = 0;
-    const speed = 0.7;
-    let rafId: number;
-
-    const scrollStep = () => {
-      if (!container || isHovered) {
-        rafId = requestAnimationFrame(scrollStep);
-        return;
-      }
-      scrollAmount += speed;
-      if (scrollAmount >= container.scrollWidth / 2) scrollAmount = 0;
-      container.scrollLeft = scrollAmount;
-      rafId = requestAnimationFrame(scrollStep);
-    };
-
-    rafId = requestAnimationFrame(scrollStep);
-    return () => cancelAnimationFrame(rafId);
-  }, [isHovered]);
+  const handleTouchEnd = () => {
+    isDragging.current = false;
+    handleResumeWithDelay();
+  };
 
   return (
-    <div className="relative">
-      <div
-        ref={containerRef}
-        className="overflow-x-auto overflow-y-hidden flex gap-4 snap-x snap-mandatory"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-        style={{ touchAction: 'pan-y pinch-zoom' }} // allow vertical scrolling
-      >
-        {children}
-        {children}
-      </div>
+    <div
+      ref={containerRef}
+      className="flex gap-4 overflow-x-auto snap-x snap-mandatory py-4 scrollbar-none"
+      onMouseEnter={handlePause}
+      onMouseLeave={handleResumeWithDelay}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+      style={{ scrollBehavior: 'smooth' }}
+    >
+      {children}
     </div>
   );
 }
 
 // ==============================
-// 🎓 CertificatesCarousel Component
+// Swipeable Certificates Carousel with 5s delayed ping-pong scroll
 // ==============================
-function CertificatesCarousel({ certificates }: any) {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const total = certificates.length;
+function SwipeableCertificates({ certificates }: any) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [paused, setPaused] = useState(false);
+  const [direction, setDirection] = useState(1);
+  const scrollAmount = 1;
+  const animationFrameId = useRef<number>();
+  const resumeTimeout = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % total);
-    }, 4000);
-    return () => clearInterval(interval);
-  }, [total]);
+    const container = containerRef.current;
+    if (!container) return;
 
-  const visibleCards = 3;
+    const step = () => {
+      if (!container || paused) {
+        animationFrameId.current = requestAnimationFrame(step);
+        return;
+      }
+
+      container.scrollLeft += scrollAmount * direction;
+
+      if (container.scrollLeft + container.clientWidth >= container.scrollWidth) {
+        setDirection(-1);
+      } else if (container.scrollLeft <= 0) {
+        setDirection(1);
+      }
+
+      animationFrameId.current = requestAnimationFrame(step);
+    };
+
+    animationFrameId.current = requestAnimationFrame(step);
+
+    return () => cancelAnimationFrame(animationFrameId.current!);
+  }, [paused, direction]);
+
+  const handlePause = () => {
+    setPaused(true);
+    if (resumeTimeout.current) clearTimeout(resumeTimeout.current);
+  };
+
+  const handleResumeWithDelay = () => {
+    if (resumeTimeout.current) clearTimeout(resumeTimeout.current);
+    resumeTimeout.current = setTimeout(() => setPaused(false), 5000);
+  };
+
+  const touchStartX = useRef(0);
+  const isDragging = useRef(false);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    isDragging.current = true;
+    handlePause();
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!isDragging.current || !containerRef.current) return;
+    const deltaX = e.touches[0].clientX - touchStartX.current;
+    containerRef.current.scrollLeft -= deltaX;
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    isDragging.current = false;
+    handleResumeWithDelay();
+  };
 
   return (
-    <div className="relative w-full max-w-6xl mx-auto overflow-hidden">
-      <div
-        className="flex transition-transform duration-700 ease-in-out"
-        style={{
-          transform: `translateX(-${(currentIndex * 100) / visibleCards}%)`,
-        }}
-      >
-        {certificates.map((certificate: any) => (
-          <div
-            key={certificate.id}
-            className="flex-shrink-0 w-[200px] sm:w-[240px] md:w-[280px] mx-2 bg-white dark:bg-gray-800 rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-700 shadow-md hover:shadow-xl transition-transform duration-500 hover:-translate-y-2 hover:scale-[1.03]"
-          >
-            <div className="relative aspect-video overflow-hidden">
-              <img
-                src={certificate.imageUrl}
-                alt={certificate.title}
-                className="w-full h-full object-cover object-center transition-transform duration-700 hover:scale-110"
-              />
-            </div>
-            <div className="p-4 text-center">
-              <h4 className="text-base font-semibold text-gray-900 dark:text-white mb-1">
-                {certificate.title}
-              </h4>
-              <p className="text-[#00C9A7] text-sm font-medium mb-1">
-                {certificate.issuer}
-              </p>
-              <div className="flex justify-center items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
-                <Calendar size={14} />
-                {new Date(certificate.date).toLocaleDateString('en-US', {
-                  year: 'numeric',
-                  month: 'short',
-                })}
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
+    <div
+      ref={containerRef}
+      className="flex gap-4 overflow-x-auto snap-x snap-mandatory py-4 scrollbar-none"
+      onMouseEnter={handlePause}
+      onMouseLeave={handleResumeWithDelay}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+      style={{ scrollBehavior: 'smooth' }}
+    >
+      {certificates.map((certificate: any) => (
+        <CertificateCard key={certificate.id} certificate={certificate} />
+      ))}
+    </div>
+  );
+}
 
-      {/* Dots */}
-      <div className="flex justify-center mt-6 gap-2">
-        {certificates.map((_: any, index: number) => (
-          <button
-            key={index}
-            onClick={() => setCurrentIndex(index)}
-            className={`w-3 h-3 rounded-full transition-all duration-300 ${
-              index === currentIndex
-                ? 'bg-gradient-to-r from-[#00C9A7] to-[#3B82F6] w-6'
-                : 'bg-gray-300 dark:bg-gray-600'
-            }`}
-          />
-        ))}
+function CertificateCard({ certificate }: any) {
+  return (
+    <div className="flex-shrink-0 w-[200px] sm:w-[240px] md:w-[280px] mx-2 bg-white dark:bg-gray-800 rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-700 shadow-md hover:shadow-xl transition-transform duration-500 hover:-translate-y-2 hover:scale-[1.03]">
+      <div className="relative aspect-video overflow-hidden">
+        <img
+          src={certificate.imageUrl}
+          alt={certificate.title}
+          className="w-full h-full object-cover object-center transition-transform duration-700 hover:scale-110"
+        />
+      </div>
+      <div className="p-4 text-center">
+        <h4 className="text-base font-semibold text-gray-900 dark:text-white mb-1">
+          {certificate.title}
+        </h4>
+        <p className="text-[#00C9A7] text-sm font-medium mb-1">{certificate.issuer}</p>
+        <div className="flex justify-center items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
+          <Calendar size={14} />
+          {new Date(certificate.date).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+          })}
+        </div>
       </div>
     </div>
   );
