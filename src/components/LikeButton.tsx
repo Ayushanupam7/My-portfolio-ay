@@ -2,15 +2,7 @@ import { Heart } from 'lucide-react';
 import { useEffect, useState, useRef } from 'react';
 import emailjs from 'emailjs-com';
 
-interface LikeButtonProps {
-  onToggleNotifications?: (enabled: boolean) => void;
-  notificationsEnabled?: boolean;
-}
-
-export default function LikeButton({
-  onToggleNotifications,
-  notificationsEnabled = true,
-}: LikeButtonProps) {
+export default function LikeButton() {
   const [isLiked, setIsLiked] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [name, setName] = useState('');
@@ -18,15 +10,13 @@ export default function LikeButton({
   const [comment, setComment] = useState('');
   const [message, setMessage] = useState('');
   const [submitted, setSubmitted] = useState(false);
-  const [likes, setLikes] = useState<number>(1400);
+  const [likes, setLikes] = useState<number>(1400); // raw likes
   const [displayLikes, setDisplayLikes] = useState<number>(1400);
 
   const likesRef = useRef(likes);
   likesRef.current = likes;
 
-  const holdTimer = useRef<NodeJS.Timeout | null>(null);
-
-  // Load liked status
+  // Load liked status and likes from localStorage
   useEffect(() => {
     const likedStatus = localStorage.getItem('portfolioLiked');
     if (likedStatus === 'true') setIsLiked(true);
@@ -43,9 +33,9 @@ export default function LikeButton({
     localStorage.setItem('portfolioLikes', likes.toString());
   }, [isLiked, likes]);
 
-  // Auto increment likes when liked
+  // Automatic increment every 5 seconds
   useEffect(() => {
-    if (!isLiked) return;
+    if (!isLiked) return; // only start after liked
     const interval = setInterval(() => {
       const newLikes = likesRef.current + 1;
       animateIncrement(likesRef.current, newLikes);
@@ -54,9 +44,10 @@ export default function LikeButton({
     return () => clearInterval(interval);
   }, [isLiked]);
 
+  // Incremental animation between numbers
   const animateIncrement = (start: number, end: number) => {
     let current = start;
-    const stepTime = 100;
+    const stepTime = 100; // show each number quickly
     const interval = setInterval(() => {
       if (current < end) {
         current += 1;
@@ -67,7 +58,6 @@ export default function LikeButton({
     }, stepTime);
   };
 
-  // 💖 Short click for like
   const handleLike = () => {
     if (!isLiked) setShowForm(true);
     else {
@@ -78,17 +68,6 @@ export default function LikeButton({
       localStorage.removeItem('portfolioLiked');
       localStorage.removeItem('portfolioLikeData');
     }
-  };
-
-  // 🕒 Long press logic (2s)
-  const startHold = () => {
-    holdTimer.current = setTimeout(() => {
-      onToggleNotifications?.(!notificationsEnabled);
-    }, 2000);
-  };
-
-  const endHold = () => {
-    if (holdTimer.current) clearTimeout(holdTimer.current);
   };
 
   const sendLikeEmail = async () => {
@@ -165,20 +144,16 @@ export default function LikeButton({
 
   return (
     <div className="flex flex-col items-center space-y-2">
+      {/* Likes count above heart (only after liked) */}
       {isLiked && !showForm && (
         <p className="text-sm text-gray-700 dark:text-gray-300 mb-1">
           {displayLikes} Likes
         </p>
       )}
 
-      {/* ❤️ Like Button (with 2s hold toggle) */}
+      {/* Like Button */}
       <button
         onClick={handleLike}
-        onMouseDown={startHold}
-        onMouseUp={endHold}
-        onMouseLeave={endHold}
-        onTouchStart={startHold}
-        onTouchEnd={endHold}
         className={`p-4 rounded-full shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300 ${
           isLiked
             ? 'bg-gradient-to-r from-red-500 to-pink-500 text-white'
@@ -189,6 +164,7 @@ export default function LikeButton({
         <Heart size={24} fill={isLiked ? 'currentColor' : 'none'} />
       </button>
 
+      {/* Dialog Form */}
       {showForm && (
         <div className="flex flex-col items-center space-y-2 bg-white dark:bg-gray-900 p-4 rounded-lg shadow-lg mt-2 border border-gray-200 dark:border-gray-700">
           <p className="text-sm text-gray-700 dark:text-gray-300 mb-1">
