@@ -365,3 +365,22 @@
 .animate-marquee:hover {
   animation-play-state: paused;
 }
+
+/* Infinite scrolling animation */
+@keyframes infinite-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-infinite-scroll {
+  animation: infinite-scroll 20s linear infinite;
+}
+
+/* Smooth transitions for dark/light mode */
+html {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}

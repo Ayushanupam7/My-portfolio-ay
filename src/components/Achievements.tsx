@@ -81,7 +81,7 @@ function AchievementCard({ achievement, Icon, formatDate }: any) {
 
   return (
     <div
-      className="relative rounded-2xl overflow-hidden bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl transition-all duration-500 flex-shrink-0 w-[260px] sm:w-[320px]"
+      className="relative rounded-2xl overflow-hidden bg-white dark:bg-gray-900  hover:shadow-xl transition-all duration-500 flex-shrink-0 w-[260px] sm:w-[320px]"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >

@@ -10,35 +10,70 @@ import Contact from './components/Contact';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
 import FloatingBubbles from './components/FloatingBubbles';
+import AuthenticationModal from './components/AuthenticationModal';
+import PersonalZone from './components/PersonalZone';
+import PersonalZoneButton from './components/PersonalZoneButton';
 
 function App() {
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [authenticated, setAuthenticated] = useState(false);
 
   const handleToggleNotifications = (enabled: boolean) => {
     setNotificationsEnabled(enabled);
   };
 
+  const handleOpenAuth = () => setShowAuthModal(true);
+  const handleCloseAuth = () => setShowAuthModal(false);
+
+  const handleAuthSuccess = () => {
+    setAuthenticated(true);
+    setShowAuthModal(false);
+  };
+
+  const handleBackToHome = () => {
+    setAuthenticated(false);
+  };
+
   return (
     <ThemeProvider>
-      {/* Prevent horizontal scrolling and ensure full responsiveness */}
       <div className="overflow-x-hidden min-h-screen w-full bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300">
-        <Navigation 
-          onToggleNotifications={handleToggleNotifications}
-          notificationsEnabled={notificationsEnabled}
-        />
-        
-        <main className="flex flex-col items-center justify-center">
-          <Hero />
-          <About />
-          <Skills />
-          <Projects />
-          <Achievements />
-          <Contact />
-        </main>
+        {!authenticated ? (
+          <>
+            <Navigation 
+              onToggleNotifications={handleToggleNotifications}
+              notificationsEnabled={notificationsEnabled}
+            />
+            
+            <main className="flex flex-col items-center justify-center">
+              <Hero />
+              <About />
+              <Skills />
+              <Projects />
+              <Achievements />
+              <Contact />
 
-        <Footer />
-        <ScrollToTop />
-        <FloatingBubbles enabled={notificationsEnabled} />
+              {/* Full-Width Personal Zone Button */}
+              <div className="my-10 px-4 md:px-0 w-full flex justify-center">
+                <PersonalZoneButton onClick={handleOpenAuth} />
+              </div>
+            </main>
+
+            <Footer />
+            <ScrollToTop />
+            <FloatingBubbles enabled={notificationsEnabled} />
+
+            {/* Authentication Modal */}
+            {showAuthModal && (
+              <AuthenticationModal 
+                onClose={handleCloseAuth} 
+                onSuccess={handleAuthSuccess} 
+              />
+            )}
+          </>
+        ) : (
+          <PersonalZone onBack={handleBackToHome} />
+        )}
       </div>
     </ThemeProvider>
   );

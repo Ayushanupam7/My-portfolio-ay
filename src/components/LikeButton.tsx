@@ -10,8 +10,8 @@ export default function LikeButton() {
   const [comment, setComment] = useState('');
   const [message, setMessage] = useState('');
   const [submitted, setSubmitted] = useState(false);
-  const [likes, setLikes] = useState<number>(1400); // raw likes
-  const [displayLikes, setDisplayLikes] = useState<number>(1400);
+  const [likes, setLikes] = useState<number>(55); // raw likes
+  const [displayLikes, setDisplayLikes] = useState<number>(56);
 
   const likesRef = useRef(likes);
   likesRef.current = likes;
