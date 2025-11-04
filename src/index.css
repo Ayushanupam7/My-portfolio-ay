@@ -377,10 +377,10 @@
 }
 
 .animate-infinite-scroll {
-  animation: infinite-scroll 20s linear infinite;
+  animation: infinite-scroll 10s linear infinite;
 }
 
-/* Smooth transitions for dark/light mode */
+/* Smooth background transition for dark/light mode */
 html {
   transition: background-color 0.3s ease, color 0.3s ease;
 }

@@ -1,14 +1,31 @@
 import { useState } from "react";
-import { Moon, Sun } from "lucide-react";
+import { Moon, Sun, Menu, X, Home } from "lucide-react";
 import { useTheme } from "../context/ThemeContext";
+import { personalInfo } from "../data/portfolio";
 
 interface PersonalZoneProps {
   onBack: () => void;
 }
 
 export default function PersonalZone({ onBack }: PersonalZoneProps) {
-  const [activeTab, setActiveTab] = useState("notes");
   const { theme, toggleTheme } = useTheme();
+  const [activeTab, setActiveTab] = useState("notes");
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  // Scroll smoothly to top (Home) and notify parent to navigate back
+  const goToHome = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    setIsMenuOpen(false);
+    // Notify parent component (e.g., to close PersonalZone or navigate home)
+    try {
+      onBack();
+    } catch (e) {
+      // swallow errors to avoid breaking the UI if parent didn't provide the handler
+      // (onBack is typed as required, but be defensive)
+      // eslint-disable-next-line no-console
+      console.warn("onBack handler failed:", e);
+    }
+  };
 
   const dribbbleShots = [
     {
@@ -39,44 +56,90 @@ export default function PersonalZone({ onBack }: PersonalZoneProps) {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-indigo-500 via-purple-600 to-pink-500 text-white dark:from-gray-900 dark:via-gray-800 dark:to-black transition-colors duration-500">
-      {/* Top Navigation Bar - Responsive */}
-      <div className="flex flex-col sm:flex-row items-center justify-between p-4 bg-white/10 dark:bg-black/30 backdrop-blur-md rounded-b-2xl shadow-lg gap-3 sm:gap-0">
-        <div className="flex items-center space-x-4 w-full sm:w-auto justify-center sm:justify-start">
-          {/* Back Button */}
-          <button
-            onClick={onBack}
-            className="bg-white text-indigo-600 font-semibold px-4 py-1 rounded-xl shadow-md hover:bg-gray-100 transition-transform transform hover:scale-105 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600"
-          >
-            ⬅ Back
-          </button>
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-indigo-500 via-purple-600 to-pink-500 text-white dark:from-gray-900 dark:via-gray-800 dark:to-black transition-colors duration-500 pt-16">
+      {/* Navigation Bar */}
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 shadow-sm transition-all">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            {/* Profile & Name */}
+            <div className="flex items-center space-x-3 flex-shrink-0 cursor-pointer" onClick={goToHome} title="Go to Home">
+              <img
+                src={personalInfo.profileImage}
+                alt={personalInfo.name}
+                className="w-11 h-11 rounded-full object-cover hover:scale-105 transition-transform"
+              />
+              <span className="text-base font-bold text-gray-900 dark:text-white">Ayush Anupam</span>
+            </div>
 
-          {/* Name */}
-          <h2 className="text-xl font-semibold tracking-wide whitespace-nowrap">
-            Ayush Anupam
-          </h2>
+            {/* Desktop Right Side */}
+            <div className="hidden md:flex items-center space-x-4">
+              
+
+              {/* Home button */}
+              <button
+                onClick={goToHome}
+                className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                aria-label="Go to Home"
+                title="Go to Home"
+              >
+                <Home size={20} className="text-gray-700 dark:text-gray-300" />
+              </button>
+              {/* Theme toggle button */}
+              <button
+                onClick={toggleTheme}
+                className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700"
+                aria-label="Toggle theme"
+                title="Toggle dark mode"
+              >
+                {theme === "light" ? <Moon size={20} className="text-gray-700 dark:text-gray-300" /> : <Sun size={20} />}
+              </button>
+            </div>
+
+            {/* Mobile Buttons */}
+            <div className="md:hidden flex items-center space-x-2">
+              <button
+                onClick={toggleTheme}
+                className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700"
+                aria-label="Toggle theme"
+                title="Toggle dark mode"
+              >
+                {theme === "light" ? <Moon size={20} /> : <Sun size={20} />}
+              </button>
+
+              <button
+                onClick={goToHome}
+                className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700"
+                aria-label="Go to Home"
+                title="Go to Home"
+              >
+                <Home size={20} className="text-gray-700 dark:text-gray-300" />
+              </button>
+
+              <button
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="p-2 text-gray-800 dark:text-gray-200 hover:text-[#00C9A7] transition-colors"
+                aria-label="Toggle menu"
+                title="Toggle menu"
+              >
+                {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              </button>
+            </div>
+          </div>
         </div>
 
-        <div className="flex items-center space-x-4 w-full sm:w-auto justify-center sm:justify-end">
-          {/* Dark/Light Mode Toggle */}
-          <button
-            onClick={toggleTheme}
-            className="p-2 bg-white/20 hover:bg-white/30 rounded-lg transition-colors"
-            title="Toggle dark mode"
-            aria-label="Toggle dark mode"
-          >
-            {theme === "light" ? <Moon size={20} /> : <Sun size={20} />}
-          </button>
-
-          {/* Settings Button */}
-          <button className="bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg transition-all duration-300 whitespace-nowrap">
-            ⚙️ Settings
-          </button>
+        {/* Mobile Dropdown Menu */}
+        <div
+          className={`md:hidden bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 overflow-hidden transition-all duration-300 ${
+            isMenuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+          }`}
+        >
+          {/* Empty or add mobile menu items if any */}
+          <div className="px-4 py-4 space-y-3"></div>
         </div>
-      </div>
+      </nav>
 
-      {/* Gap between Nav and Dribbble Carousel */}
-      <div className="mt-8" />
+      {/* Spacer below navbar */}
+      <div className="pt-20" />
 
       {/* Infinite Dribbble Carousel */}
       <div className="overflow-hidden whitespace-nowrap px-6 pb-6">
