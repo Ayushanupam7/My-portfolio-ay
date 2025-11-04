@@ -173,8 +173,7 @@ export default function LikeButton() {
 
           <input
             type="text"
-            placeholder="Your name "
-            required
+            placeholder="Your name (optional)"
             value={name}
             onChange={(e) => setName(e.target.value)}
             className="w-64 p-2 border rounded-md text-sm dark:bg-gray-800 dark:text-white"
