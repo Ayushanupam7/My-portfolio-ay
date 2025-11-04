@@ -33,9 +33,9 @@ export default function LikeButton() {
     localStorage.setItem('portfolioLikes', likes.toString());
   }, [isLiked, likes]);
 
-  // Automatic increment every 5 seconds
+  // Automatic increment every 10 seconds after liked
   useEffect(() => {
-    if (!isLiked) return; // only start after liked
+    if (!isLiked) return;
     const interval = setInterval(() => {
       const newLikes = likesRef.current + 1;
       animateIncrement(likesRef.current, newLikes);
@@ -47,7 +47,7 @@ export default function LikeButton() {
   // Incremental animation between numbers
   const animateIncrement = (start: number, end: number) => {
     let current = start;
-    const stepTime = 100; // show each number quickly
+    const stepTime = 100;
     const interval = setInterval(() => {
       if (current < end) {
         current += 1;
@@ -70,10 +70,16 @@ export default function LikeButton() {
     }
   };
 
+  // --- Updated with Name Validation ---
   const sendLikeEmail = async () => {
+    if (!name.trim()) {
+      setMessage('Please enter your name before submitting.');
+      return;
+    }
+
     setSubmitted(true);
     const templateParams = {
-      user_name: name || 'Anonymous',
+      user_name: name,
       user_email: email || 'Not provided',
       user_comment: comment || 'No comments provided.',
       message: 'liked your portfolio!',
@@ -103,7 +109,7 @@ export default function LikeButton() {
             'service_gi9n2qk',
             'template_t0qa32l',
             {
-              user_name: name || 'Friend',
+              user_name: name,
               user_email: email,
               user_comment: comment || 'No comment provided.',
             },
@@ -135,6 +141,7 @@ export default function LikeButton() {
     setEmail('');
     setComment('');
     setSubmitted(false);
+    setMessage('');
   };
 
   const formatLikes = (num: number) => {
@@ -144,7 +151,7 @@ export default function LikeButton() {
 
   return (
     <div className="flex flex-col items-center space-y-2">
-      {/* Likes count above heart (only after liked) */}
+      {/* Likes count above heart */}
       {isLiked && !showForm && (
         <p className="text-sm text-gray-700 dark:text-gray-300 mb-1">
           {displayLikes} Likes
@@ -154,17 +161,16 @@ export default function LikeButton() {
       {/* Like Button */}
       <button
         onClick={handleLike}
-        className={`p-4 rounded-full shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300 ${
-          isLiked
-            ? 'bg-gradient-to-r from-red-500 to-pink-500 text-white'
-            : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300'
-        }`}
+        className={`p-4 rounded-full shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300 ${isLiked
+          ? 'bg-gradient-to-r from-red-500 to-pink-500 text-white'
+          : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300'
+          }`}
         aria-label="Like"
       >
         <Heart size={24} fill={isLiked ? 'currentColor' : 'none'} />
       </button>
 
-      {/* Dialog Form */}
+      {/* Like Form */}
       {showForm && (
         <div className="flex flex-col items-center space-y-2 bg-white dark:bg-gray-900 p-4 rounded-lg shadow-lg mt-2 border border-gray-200 dark:border-gray-700">
           <p className="text-sm text-gray-700 dark:text-gray-300 mb-1">
@@ -173,11 +179,14 @@ export default function LikeButton() {
 
           <input
             type="text"
-            placeholder="Your name (optional)"
+            placeholder="Your name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-64 p-2 border rounded-md text-sm dark:bg-gray-800 dark:text-white"
+            className={`w-64 p-2 border rounded-md text-sm dark:bg-gray-800 dark:text-white ${!name.trim() && submitted ? 'border-red-500' : ''
+              }`}
+            required
           />
+
           <input
             type="email"
             placeholder="Your email (optional)"
@@ -185,6 +194,10 @@ export default function LikeButton() {
             onChange={(e) => setEmail(e.target.value)}
             className="w-64 p-2 border rounded-md text-sm dark:bg-gray-800 dark:text-white"
           />
+          <p className="text-[7px] text-gray-500 dark:text-gray-400 self-end w-64 text-right">
+            (If you provide your email, I can reach out to thank or reply to you.)
+          </p>
+
           <textarea
             placeholder="Your comments (optional)"
             value={comment}
@@ -192,15 +205,15 @@ export default function LikeButton() {
             className="w-64 p-2 border rounded-md text-sm dark:bg-gray-800 dark:text-white"
             rows={3}
           />
+
           <div className="flex space-x-2 mt-2">
             <button
               onClick={sendLikeEmail}
               disabled={submitted}
-              className={`px-3 py-1 rounded-md ${
-                submitted
-                  ? 'bg-green-500 text-white cursor-not-allowed'
-                  : 'bg-blue-500 text-white hover:bg-blue-600'
-              }`}
+              className={`px-3 py-1 rounded-md ${submitted
+                ? 'bg-green-500 text-white cursor-not-allowed'
+                : 'bg-blue-500 text-white hover:bg-blue-600'
+                }`}
             >
               {submitted ? 'Submitted' : 'Submit'}
             </button>
@@ -214,7 +227,18 @@ export default function LikeButton() {
         </div>
       )}
 
-      {message && <p className="text-sm text-green-500">{message}</p>}
+      {message && (
+        <p
+          className={`text-sm ${message.includes('Please')
+            ? 'text-red-500'
+            : message.includes('Failed')
+              ? 'text-yellow-500'
+              : 'text-green-500'
+            }`}
+        >
+          {message}
+        </p>
+      )}
     </div>
   );
 }
