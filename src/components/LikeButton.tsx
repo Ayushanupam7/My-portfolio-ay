@@ -81,7 +81,7 @@ export default function LikeButton() {
 
     try {
       await emailjs.send(
-        'service_3sw5l5p',
+        'service_gi9n2qk',
         'template_b8e79rl',
         templateParams,
         'Ckz7LWvdJcPwE0drE'
@@ -100,7 +100,7 @@ export default function LikeButton() {
       if (email) {
         try {
           await emailjs.send(
-            'service_3sw5l5p',
+            'service_gi9n2qk',
             'template_t0qa32l',
             {
               user_name: name || 'Friend',
