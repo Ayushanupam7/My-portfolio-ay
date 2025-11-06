@@ -37,7 +37,8 @@ export default function Navigation({ onToggleNotifications, notificationsEnabled
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 shadow-sm transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          {/* Profile & Name */}
+          
+          {/* ✅ Profile + Name logo */}
           <div className="flex items-center space-x-3 flex-shrink-0">
             <div
               className="w-11 h-11 rounded-full cursor-pointer hover:scale-105 transition-transform"
@@ -54,7 +55,7 @@ export default function Navigation({ onToggleNotifications, notificationsEnabled
             </span>
           </div>
 
-          {/* Desktop Menu */}
+          {/* ✅ Desktop Menu */}
           <div className="hidden md:flex items-center space-x-4">
             {navItems.map(item => (
               <button
@@ -66,7 +67,7 @@ export default function Navigation({ onToggleNotifications, notificationsEnabled
               </button>
             ))}
 
-            {/* ✅ Notifications Toggle (icon only) */}
+            {/* 🔔 Notifications Toggle */}
             <button
               onClick={handleToggleNotifications}
               className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
@@ -79,19 +80,20 @@ export default function Navigation({ onToggleNotifications, notificationsEnabled
               )}
             </button>
 
-            {/* Theme Toggle */}
+            {/* 🌙 Theme Toggle (IMPORTANT: add ID for circular reveal) */}
             <button
+              id="theme-toggle-btn"
               onClick={toggleTheme}
-              className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+              className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all hover:scale-105 active:scale-95"
               aria-label="Toggle theme"
             >
               {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
             </button>
           </div>
 
-          {/* Mobile Buttons */}
+          {/* ✅ Mobile Buttons */}
           <div className="md:hidden flex items-center space-x-2">
-            {/* ✅ Notifications Toggle (icon only) */}
+            {/* Notifications toggle */}
             <button
               onClick={handleToggleNotifications}
               className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700"
@@ -103,15 +105,16 @@ export default function Navigation({ onToggleNotifications, notificationsEnabled
               )}
             </button>
 
-            {/* Theme Toggle */}
+            {/* 🌙 Theme Toggle (IMPORTANT: same ID for mobile too) */}
             <button
+              id="theme-toggle-btn"
               onClick={toggleTheme}
-              className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700"
+              className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all hover:scale-105 active:scale-95"
             >
               {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
             </button>
 
-            {/* Menu Button */}
+            {/* Hamburger Menu */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="p-2 text-gray-800 dark:text-gray-200 hover:text-[#00C9A7] transition-colors"
@@ -122,7 +125,7 @@ export default function Navigation({ onToggleNotifications, notificationsEnabled
         </div>
       </div>
 
-      {/* Mobile Dropdown Menu */}
+      {/* ✅ Mobile Dropdown Menu */}
       <div
         className={`md:hidden bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 overflow-hidden transition-all duration-300 ${
           isMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'

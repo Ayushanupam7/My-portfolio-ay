@@ -1,24 +1,27 @@
-/* ==========================================
-   Google Fonts
-========================================== */
+/* =====================================================================
+   GOOGLE FONTS
+===================================================================== */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
 
-/* ==========================================
-   Tailwind Directives
-========================================== */
+/* =====================================================================
+   TAILWIND DIRECTIVES
+===================================================================== */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 
-/* ==========================================
-   Base Styles
-========================================== */
+
+/* =====================================================================
+   BASE STYLES
+===================================================================== */
 @layer base {
   html {
-    scroll-behavior: smooth; /* Smooth scrolling */
+    scroll-behavior: smooth;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
+  
 
   body {
     @apply font-sans antialiased;
@@ -27,46 +30,38 @@
 }
 
 
-/* ==========================================
-   Animations
-========================================== */
+
+/* =====================================================================
+   UTILITIES – GLOBAL TRANSITIONS
+   (Smooth Light <→ Dark Mode)
+===================================================================== */
+* {
+  transition: background-color .3s ease,
+              color .3s ease,
+              border-color .3s ease;
+}
+
+
+
+/* =====================================================================
+   CUSTOM ANIMATIONS & KEYFRAMES
+===================================================================== */
+
 @layer utilities {
-  /* Fade-in Animation */
-  .animate-fade-in {
-    animation: fadeIn 0.8s ease-in;
+
+  /* ---------------------------------------------------------------
+     1) FLOAT-UP (used in testimonial bubbles)
+  --------------------------------------------------------------- */
+  @keyframes float-up {
+    0% { transform: translateY(40px); opacity: 0; }
+    5% { opacity: 1; }
+    100% { transform: translateY(-220px); opacity: 0; }
+  }
+  .animate-float-up {
+    animation: float-up 20s linear forwards;
   }
 
-  /* Slide-up Animation */
-  .animate-slide-up {
-    animation: slideUp 0.8s ease-out;
-  }
-
-  /* Floating animations */
-  .animate-float-left {
-    animation: float-left 7s linear forwards;
-  }
-  .animate-float-right {
-    animation: float-right 7s linear forwards;
-  }
-
-  /* Animation delays */
-  .animation-delay-200 { animation-delay: 0.2s; }
-  .animation-delay-400 { animation-delay: 0.4s; }
-  .animation-delay-600 { animation-delay: 0.6s; }
-  .animation-delay-1000 { animation-delay: 1s; }
-
-  /* Keyframes */
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-
-  @keyframes slideUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  /* Float up animation for bubbles (subtle, near bottom) */
+  /* Alternative floatUp for bottom bubbles (used later too) */
   @keyframes floatUp {
     0%   { opacity: 0; transform: translateY(0) scale(0.95); }
     10%  { opacity: 1; transform: translateY(-100px); }
@@ -75,163 +70,187 @@
     100% { opacity: 0; transform: translateY(-320px) scale(0.98); }
   }
 
-  .animate-float-up {
+  .animate-float-up-alt {
     animation: floatUp 10s ease-in-out infinite;
   }
 
-  /* Floating from right → left */
+
+
+  /* ---------------------------------------------------------------
+     2) SCALE-IN (Modal Open Animation)
+  --------------------------------------------------------------- */
+  @keyframes scale-in {
+    0% { transform: scale(0.95); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  .animate-scale-in {
+    animation: scale-in 150ms ease-out both;
+  }
+
+
+  /* ---------------------------------------------------------------
+     3) FADE & SLIDE ANIMATIONS
+  --------------------------------------------------------------- */
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  .animate-fade-in {
+    animation: fadeIn 0.8s ease-in;
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-slide-up {
+    animation: slideUp 0.8s ease-out;
+  }
+
+
+  /* ---------------------------------------------------------------
+     4) FLOAT LEFT / RIGHT ANIMATIONS
+  --------------------------------------------------------------- */
   @keyframes float-left {
-    0%   { transform: translateX(110%); opacity: 0; }
-    10%  { opacity: 1; }
-    90%  { opacity: 1; }
+    0% { transform: translateX(110%); opacity: 0; }
+    10%, 90% { opacity: 1; }
     100% { transform: translateX(-110%); opacity: 0; }
   }
+  .animate-float-left {
+    animation: float-left 7s linear forwards;
+  }
 
-  /* Floating from left → right */
   @keyframes float-right {
-    0%   { transform: translateX(-110%); opacity: 0; }
-    10%  { opacity: 1; }
-    90%  { opacity: 1; }
+    0% { transform: translateX(-110%); opacity: 0; }
+    10%, 90% { opacity: 1; }
     100% { transform: translateX(110%); opacity: 0; }
+  }
+  .animate-float-right {
+    animation: float-right 7s linear forwards;
+  }
+
+
+  /* ---------------------------------------------------------------
+     5) Animation Delay Helpers
+  --------------------------------------------------------------- */
+  .animation-delay-200  { animation-delay: 0.2s; }
+  .animation-delay-400  { animation-delay: 0.4s; }
+  .animation-delay-600  { animation-delay: 0.6s; }
+  .animation-delay-1000 { animation-delay: 1s; }
+
+
+  /* ---------------------------------------------------------------
+     6) MARQUEE (Scrolling Text)
+  --------------------------------------------------------------- */
+  @keyframes infinite-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  .animate-infinite-scroll {
+    animation: infinite-scroll 10s linear infinite;
   }
 }
 
 
-/* ==========================================
-   Refined Scrollbar Styles
-   - Vertical Scrollbar (default)
-========================================== */
 
-/* General scrollbar size */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 12px; /* default height for horizontal scrollbar */
+/* =====================================================================
+   MARQUEE WRAPPER (FADE SIDES)
+===================================================================== */
+.marquee-wrapper {
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
 }
 
-/* Scrollbar track */
+
+
+/* =====================================================================
+   SCROLLBAR STYLING (Vertical + Horizontal + Dark Mode)
+===================================================================== */
+
+/* Size */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 12px;
+}
+
+/* Track */
 ::-webkit-scrollbar-track {
   background: transparent;
 }
 
-/* Scrollbar thumb with gradient */
+/* Thumb */
 ::-webkit-scrollbar-thumb {
   background: linear-gradient(to bottom, #00C9A7, #3B82F6);
   border-radius: 10px;
 }
 
-/* Hover effect for thumb */
 ::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(180deg, #3B82F6, #00C9A7);
   box-shadow: 0 0 6px rgba(0, 201, 167, 0.5);
 }
 
-/* Active (click) effect */
 ::-webkit-scrollbar-thumb:active {
   background: linear-gradient(180deg, #00A88A, #2563EB);
   box-shadow: 0 0 10px rgba(0, 201, 167, 0.6);
 }
 
-/* Dark mode vertical scrollbar */
+/* Dark Mode */
 .dark ::-webkit-scrollbar-track {
   background: black;
 }
 .dark ::-webkit-scrollbar-thumb {
   background: linear-gradient(to bottom, #00C9A7, #3B82F6);
-  border-radius: 10px;
 }
 .dark ::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(180deg, #3B82F6, #00C9A7);
-  box-shadow: 0 0 10px rgba(0, 201, 167, 0.5);
 }
 .dark ::-webkit-scrollbar-thumb:active {
   background: linear-gradient(180deg, #00A88A, #2563EB);
-  box-shadow: 0 0 14px rgba(0, 201, 167, 0.6);
 }
 
 
-/* ==========================================
-   Horizontal Scrollbar Styles
-   - Thin scrollbar with gradient thumb matching vertical style
-========================================== */
 
-/* Horizontal scrollbar thickness */
+ /* ---------------------------------------------------------------
+     Horizontal Scrollbar
+ --------------------------------------------------------------- */
 ::-webkit-scrollbar:horizontal {
-  height: 8px; /* Thin height for horizontal scrollbar */
+  height: 8px;
 }
 
-/* Horizontal scrollbar track */
-::-webkit-scrollbar-track:horizontal {
-  background: transparent;
-  border-radius: 8px;
-}
-
-/* Horizontal scrollbar thumb */
 ::-webkit-scrollbar-thumb:horizontal {
-  background: linear-gradient(to right, #00C9A7, #3B82F6); /* horizontal gradient */
-  border-radius: 8px;
-}
-
-/* Hover effect */
-::-webkit-scrollbar-thumb:horizontal:hover {
-  background: linear-gradient(to right, #3B82F6, #00C9A7);
-  box-shadow: 0 0 6px rgba(0, 201, 167, 0.5);
-}
-
-/* Active effect */
-::-webkit-scrollbar-thumb:horizontal:active {
-  background: linear-gradient(to right, #00A88A, #2563EB);
-  box-shadow: 0 0 10px rgba(0, 201, 167, 0.6);
-}
-
-/* Dark mode horizontal scrollbar track */
-.dark ::-webkit-scrollbar-track:horizontal {
-  background: black;
-}
-
-/* Dark mode horizontal thumb */
-.dark ::-webkit-scrollbar-thumb:horizontal {
   background: linear-gradient(to right, #00C9A7, #3B82F6);
   border-radius: 8px;
 }
 
-.dark ::-webkit-scrollbar-thumb:horizontal:hover {
+::-webkit-scrollbar-thumb:horizontal:hover {
   background: linear-gradient(to right, #3B82F6, #00C9A7);
-  box-shadow: 0 0 10px rgba(0, 201, 167, 0.5);
 }
 
-.dark ::-webkit-scrollbar-thumb:horizontal:active {
-  background: linear-gradient(to right, #00A88A, #2563EB);
-  box-shadow: 0 0 14px rgba(0, 201, 167, 0.6);
+/* Dark Mode */
+.dark ::-webkit-scrollbar-thumb:horizontal {
+  background: linear-gradient(to right, #00C9A7, #3B82F6);
 }
 
 
-/* --- Gradient Scrollbar Reusable Class --- */
-/* If you want to apply custom scrollbar styles selectively */
+
+/* =====================================================================
+   OPTIONAL — Custom Scrollbar Class
+===================================================================== */
 .custom-scrollbar::-webkit-scrollbar {
   width: 6px;
   height: 8px;
 }
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: transparent;
-}
 .custom-scrollbar::-webkit-scrollbar-thumb {
   background: linear-gradient(to bottom, #00C9A7, #3B82F6);
-  border-radius: 10px;
-}
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(to bottom, #3B82F6, #00C9A7);
 }
 
 
 
-/* ==========================================
-   Other styles (Animations, Footer, etc.)
-   ... (Your existing styles remain unchanged) ...
-========================================== */
-
-
-/* === Footer Section === */
-
+/* =====================================================================
+   FOOTER STYLING WITH ANIMATIONS
+===================================================================== */
 .footer-container {
   background: linear-gradient(135deg, #ffffff, #f9fafb);
   border-top: 1px solid #e5e7eb;
@@ -239,15 +258,18 @@
   position: relative;
   overflow: hidden;
 }
+
 .dark .footer-container {
   background: linear-gradient(135deg, #0f172a, #1e293b);
   border-top: 1px solid #334155;
 }
+
 .footer-inner {
   max-width: 90rem;
   margin: 0 auto;
   padding: 2rem 1.5rem;
 }
+
 .footer-content {
   display: flex;
   flex-direction: column;
@@ -256,11 +278,13 @@
   align-items: center;
   animation: fadeIn 1s ease-in-out;
 }
+
 @media (min-width: 768px) {
   .footer-content {
     flex-direction: row;
   }
 }
+
 .footer-left {
   display: flex;
   align-items: center;
@@ -269,29 +293,35 @@
   color: #4b5563;
   transition: color 0.3s ease;
 }
+
 .dark .footer-left {
   color: #9ca3af;
 }
+
 .footer-left:hover {
   color: #111827;
 }
 .dark .footer-left:hover {
   color: #f3f4f6;
 }
+
 .footer-heart {
   color: #ef4444;
   fill: #ef4444;
   animation: floatHeart 2.5s ease-in-out infinite;
   transform-origin: center;
 }
+
 .footer-right {
   font-size: 0.875rem;
   color: #6b7280;
   transition: color 0.3s ease;
 }
+
 .dark .footer-right {
   color: #9ca3af;
 }
+
 .footer-container::before {
   content: '';
   position: absolute;
@@ -304,83 +334,14 @@
   animation: moveGradient 6s linear infinite;
   opacity: 0.6;
 }
-/* Animations for footer */
-@keyframes moveGradient {
-  0% { background-position: 0% 50%; }
-  100% { background-position: 100% 50%; }
-}
+
+/* Footer Keyframes */
 @keyframes floatHeart {
   0%, 100% { transform: translateY(0) scale(1); }
-  50% { transform: translateY(-4px) scale(1.1); }
-}
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  50%      { transform: translateY(-4px) scale(1.1); }
 }
 
-/* Marquee Animation */
-@keyframes marquee {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
-}
-
-/* Wrapper with fade effect */
-.marquee-wrapper {
-  position: relative;
-  overflow: hidden;
-  white-space: nowrap;
-  width: 100%;
-  
-  
-}
-
-/* Animated text */
-.animate-marquee {
-  display: inline-block;
-  white-space: nowrap;
-  animation: marquee 10s linear infinite;
-  animation-delay: 1s;
-}
-
-/* Duplicate text for seamless scroll */
-.animate-marquee span {
-  display: inline-block;
-  padding-right: 2rem;
-}
-
-/* Italic and smaller text is already applied via Tailwind classes */
-
-/* Slower on mobile */
-@media (max-width: 768px) {
-  .animate-marquee {
-    animation-duration: 22s;
-  }
-}
-
-/* Pause on hover */
-.animate-marquee:hover {
-  animation-play-state: paused;
-}
-
-/* Infinite scrolling animation */
-@keyframes infinite-scroll {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
-}
-
-.animate-infinite-scroll {
-  animation: infinite-scroll 10s linear infinite;
-}
-
-/* Smooth background transition for dark/light mode */
-html {
-  transition: background-color 0.3s ease, color 0.3s ease;
+@keyframes moveGradient {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
 }

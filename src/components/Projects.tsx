@@ -25,7 +25,7 @@ export default function Projects() {
           {visibleProjects.map((project) => (
             <div
               key={project.id}
-              className="group bg-white dark:bg-gray-900 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2"
+              className="group bg-white dark:bg-gray-900 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 "
             >
               <div className="relative overflow-hidden aspect-video">
                 <img
