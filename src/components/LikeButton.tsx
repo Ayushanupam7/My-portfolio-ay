@@ -194,8 +194,8 @@ export default function LikeButton() {
             onChange={(e) => setEmail(e.target.value)}
             className="w-64 p-2 border rounded-md text-sm dark:bg-gray-800 dark:text-white"
           />
-          <p className="text-[7px] text-gray-500 dark:text-gray-400 self-end w-64 text-right">
-            (If you provide your email, I can reach out to thank or reply to you.)
+          <p className="text-[8px] text-gray-500 dark:text-gray-400 self-end w-64 text-right">
+          If you provide your email, I can reach out to thank or reply to you.
           </p>
 
           <textarea

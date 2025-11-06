@@ -69,13 +69,7 @@ export default function ScrollToTop() {
             <ArrowUp size={24} />
 
             {/* Current theme icon */}
-            <span className="absolute -top-3 right-0">
-              {theme === 'light' ? (
-                <Sun size={10} className="text-yellow-400" />
-              ) : (
-                <Moon size={10} className="text-gray-200" />
-              )}
-            </span>
+            
           </button>
         </div>
       )}

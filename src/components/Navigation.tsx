@@ -66,7 +66,7 @@ export default function Navigation({ onToggleNotifications, notificationsEnabled
               </button>
             ))}
 
-            {/* Notifications */}
+            {/* ✅ Notifications Toggle (icon only) */}
             <button
               onClick={handleToggleNotifications}
               className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
@@ -79,7 +79,7 @@ export default function Navigation({ onToggleNotifications, notificationsEnabled
               )}
             </button>
 
-            {/* Theme */}
+            {/* Theme Toggle */}
             <button
               onClick={toggleTheme}
               className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
@@ -91,6 +91,7 @@ export default function Navigation({ onToggleNotifications, notificationsEnabled
 
           {/* Mobile Buttons */}
           <div className="md:hidden flex items-center space-x-2">
+            {/* ✅ Notifications Toggle (icon only) */}
             <button
               onClick={handleToggleNotifications}
               className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700"
@@ -102,6 +103,7 @@ export default function Navigation({ onToggleNotifications, notificationsEnabled
               )}
             </button>
 
+            {/* Theme Toggle */}
             <button
               onClick={toggleTheme}
               className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700"
@@ -109,6 +111,7 @@ export default function Navigation({ onToggleNotifications, notificationsEnabled
               {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
             </button>
 
+            {/* Menu Button */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="p-2 text-gray-800 dark:text-gray-200 hover:text-[#00C9A7] transition-colors"

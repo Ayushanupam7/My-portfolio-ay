@@ -40,11 +40,11 @@ function App() {
       <div className="overflow-x-hidden min-h-screen w-full bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300">
         {!authenticated ? (
           <>
-            <Navigation 
+            <Navigation
               onToggleNotifications={handleToggleNotifications}
               notificationsEnabled={notificationsEnabled}
             />
-            
+
             <main className="flex flex-col items-center justify-center">
               <Hero />
               <About />
@@ -53,7 +53,6 @@ function App() {
               <Achievements />
               <Contact />
 
-              {/* Full-Width Personal Zone Button */}
               <div className="my-10 px-4 md:px-0 w-full flex justify-center">
                 <PersonalZoneButton onClick={handleOpenAuth} />
               </div>
@@ -61,13 +60,17 @@ function App() {
 
             <Footer />
             <ScrollToTop />
-            <FloatingBubbles enabled={notificationsEnabled} />
+            
+            {/* ✅ Pass setNotificationsEnabled directly */}
+            <FloatingBubbles
+              enabled={notificationsEnabled}
+              onToggleNotifications={handleToggleNotifications}
+            />
 
-            {/* Authentication Modal */}
             {showAuthModal && (
-              <AuthenticationModal 
-                onClose={handleCloseAuth} 
-                onSuccess={handleAuthSuccess} 
+              <AuthenticationModal
+                onClose={handleCloseAuth}
+                onSuccess={handleAuthSuccess}
               />
             )}
           </>
