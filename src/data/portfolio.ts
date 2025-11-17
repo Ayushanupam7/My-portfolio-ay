@@ -3,8 +3,8 @@
 // ==============================
 export const personalInfo = {
   name: "Ayush Anupam",
-  tagline: "Frontend Developer | UX Designer | Innovator",
-  education: "B.Tech in AI & ML",
+  tagline: "Blending creativity and engineering to craft fast, modern digital experiences.",
+  education: "B.Tech in Artificial Intelligence & Machine Learning",
   school10th: "Indian Public School, Hajipur",
   school12th: "R.B.S College, Hajipur",
   college: "G H Raisoni College of Engineering and Management",

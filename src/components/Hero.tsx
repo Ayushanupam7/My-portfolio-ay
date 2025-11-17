@@ -1,4 +1,5 @@
-import { Download, Mail, ArrowDown, Linkedin, Github, Instagram, Twitter } from 'lucide-react';
+import { Download, Mail, ArrowDown, Linkedin, Github, Instagram, Twitter, Folder } from 'lucide-react';
+import { FolderGit2 } from 'lucide-react';
 import { personalInfo } from '../data/portfolio';
 
 export default function Hero() {
@@ -8,6 +9,9 @@ export default function Hero() {
 
   const scrollToAbout = () => {
     document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' });
+  };
+  const scrollToProjects = () => {
+    document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
@@ -33,7 +37,7 @@ export default function Hero() {
               {personalInfo.tagline}
             </p>
 
-            <p className="text-lg text-gray-500 dark:text-gray-500 max-w-2xl mx-auto animate-slide-up animation-delay-400">
+            <p className="text-xs text-gray-500 dark:text-gray-500 max-w-2xl mx-auto animate-slide-up animation-delay-400">
               {personalInfo.education}
             </p>
           </div>
@@ -47,7 +51,7 @@ export default function Hero() {
               <Mail size={20} />
               Hire Me
             </button>
-
+    
             <a
               href={personalInfo.resume}
               download
@@ -56,6 +60,13 @@ export default function Hero() {
               <Download size={20} />
               Download Resume
             </a>
+            <button
+              onClick={scrollToProjects}
+              className="group px-8 py-4 bg-gradient-to-r from-[#00C9A7] to-[#3B82F6] text-white rounded-full font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300 flex items-center gap-2"
+            >
+              <Folder size={20} />
+              
+            </button>
           </div>
 
           {/* Social Links (reduced margin) */}
