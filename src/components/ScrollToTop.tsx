@@ -63,7 +63,7 @@ export default function ScrollToTop() {
             className={`relative 
               p-3 sm:p-4 
               bg-gradient-to-r from-[#00C9A7] to-[#3B82F6] 
-              text-white rounded-full shadow-lg 
+              text-white rounded-full shadow-lg hover:shadow-xl hover:scale-110
               transition-all duration-300 
               flex items-center justify-center
               ${isFeedback ? 'scale-110 ring-4 ring-white/30' : ''}`}

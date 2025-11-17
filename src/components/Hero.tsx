@@ -51,7 +51,13 @@ export default function Hero() {
               <Mail size={20} />
               Hire Me
             </button>
-    
+            <button
+              onClick={scrollToProjects}
+              className="group px-8 py-4 bg-gradient-to-r from-[#00C9A7] to-[#3B82F6] text-white rounded-full font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300 flex items-center gap-2"
+            >
+              <Folder size={20} />
+              My Projects
+            </button>
             <a
               href={personalInfo.resume}
               download
@@ -60,13 +66,7 @@ export default function Hero() {
               <Download size={20} />
               Download Resume
             </a>
-            <button
-              onClick={scrollToProjects}
-              className="group px-8 py-4 bg-gradient-to-r from-[#00C9A7] to-[#3B82F6] text-white rounded-full font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300 flex items-center gap-2"
-            >
-              <Folder size={20} />
-              
-            </button>
+            
           </div>
 
           {/* Social Links (reduced margin) */}
