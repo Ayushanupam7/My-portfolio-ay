@@ -37,7 +37,7 @@ const generateRandomBubble = (id: number): Bubble => {
     id,
     name: t.name,
     image: t.image,
-    role: t.role || 'Visitor',
+    role: t.role || "Visitor",
     comment: t.comment,
     email: t.email,
     position: { x: Math.random() * 100 - 50, y: Math.random() * 200 + 50 },
@@ -56,6 +56,7 @@ function TestimonialModal({ testimonial, isOpen, onClose }: TestimonialModalProp
         className="absolute inset-0 bg-black/50 transition-opacity duration-300"
         onClick={onClose}
       />
+
       <div className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-6 mx-4 max-w-md w-full transform animate-scale-in">
         <button
           onClick={onClose}
@@ -76,6 +77,7 @@ function TestimonialModal({ testimonial, isOpen, onClose }: TestimonialModalProp
           <div>
             <h3 className="text-xl font-bold text-gray-900 dark:text-white">{testimonial.name}</h3>
             <p className="text-gray-600 dark:text-gray-300 text-sm">{testimonial.role}</p>
+
             {testimonial.email && (
               <a
                 href={`mailto:${testimonial.email}`}
@@ -97,14 +99,17 @@ function TestimonialModal({ testimonial, isOpen, onClose }: TestimonialModalProp
         <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 border-t dark:border-gray-600 pt-4">
           <span>Received:</span>
           <span>
-            {testimonial.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-            {' • '}
-            {testimonial.timestamp.toLocaleDateString([], { day: 'numeric', month: 'short', year: 'numeric' })}
+            {testimonial.timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })} •{" "}
+            {testimonial.timestamp.toLocaleDateString([], {
+              day: "numeric",
+              month: "short",
+              year: "numeric",
+            })}
           </span>
         </div>
 
-        <div className="absolute -top-2 -right-2 w-8 h-8 bg-[#00C9A7] rounded-full opacity-20 animate-pulse" />
-        <div className="absolute -bottom-2 -left-2 w-6 h-6 bg-[#00C9A7] rounded-full opacity-20 animate-pulse" />
+        <div className="absolute -top-2 -right-2 w-8 h-8 bg-[#00C9A7] rounded-full opacity-20 animate-pulse"></div>
+        <div className="absolute -bottom-2 -left-2 w-6 h-6 bg-[#00C9A7] rounded-full opacity-20 animate-pulse"></div>
       </div>
     </div>
   );
@@ -112,7 +117,7 @@ function TestimonialModal({ testimonial, isOpen, onClose }: TestimonialModalProp
 
 export default function FloatingBubbles({
   enabled = true,
-  onToggleNotifications
+  onToggleNotifications,
 }: FloatingBubblesProps) {
   const [bubbles, setBubbles] = useState<Bubble[]>([]);
   const [isVisible, setIsVisible] = useState(false);
@@ -125,8 +130,9 @@ export default function FloatingBubbles({
   useEffect(() => {
     const toggleVisibility = () => setIsVisible(window.pageYOffset > 300);
     toggleVisibility();
-    window.addEventListener('scroll', toggleVisibility);
-    return () => window.removeEventListener('scroll', toggleVisibility);
+
+    window.addEventListener("scroll", toggleVisibility);
+    return () => window.removeEventListener("scroll", toggleVisibility);
   }, []);
 
   useEffect(() => {
@@ -134,14 +140,17 @@ export default function FloatingBubbles({
       setBubbles([]);
       return;
     }
+
     setBubbles([generateRandomBubble(0)]);
+
     const interval = setInterval(() => {
-      setBubbles(prev => {
+      setBubbles((prev) => {
         const latest = prev.slice(-2);
         latest.push(generateRandomBubble(Date.now()));
         return latest.slice(-2);
       });
     }, 10000);
+
     return () => clearInterval(interval);
   }, [notificationsEnabled]);
 
@@ -149,6 +158,7 @@ export default function FloatingBubbles({
     const newVal = !notificationsEnabled;
     setNotificationsEnabled(newVal);
     onToggleNotifications?.(newVal);
+
     if (!newVal) setBubbles([]);
   };
 
@@ -164,15 +174,19 @@ export default function FloatingBubbles({
 
   const handleTouchStart = (e: React.TouchEvent, bubbleId: number) => {
     const touchX = e.touches[0].clientX;
-    setBubbles(prev => prev.map(b =>
-      b.id === bubbleId ? { ...b, dragX: touchX, dragging: true } : b
-    ));
+
+    setBubbles((prev) =>
+      prev.map((b) =>
+        b.id === bubbleId ? { ...b, dragX: touchX, dragging: true } : b
+      )
+    );
   };
 
   const handleTouchMove = (e: React.TouchEvent, bubbleId: number) => {
     const currentX = e.touches[0].clientX;
-    setBubbles(prev =>
-      prev.map(b => {
+
+    setBubbles((prev) =>
+      prev.map((b) => {
         if (b.id === bubbleId && b.dragging && b.dragX !== undefined) {
           return { ...b, dragX: currentX - b.dragX };
         }
@@ -182,16 +196,19 @@ export default function FloatingBubbles({
   };
 
   const handleTouchEnd = (_e: React.TouchEvent, bubbleId: number) => {
-    setBubbles(prev =>
-      prev.map(b => {
+    setBubbles((prev) =>
+      prev.map((b) => {
         if (b.id === bubbleId && b.dragging) {
           const threshold = 50;
+
           if (b.dragX && Math.abs(b.dragX) > threshold) {
-            const direction = b.dragX > 0 ? 'right' : 'left';
+            const direction = b.dragX > 0 ? "right" : "left";
             const animationDuration = 300;
+
             setTimeout(() => {
-              setBubbles(curr => curr.filter(bb => bb.id !== bubbleId));
+              setBubbles((curr) => curr.filter((bb) => bb.id !== bubbleId));
             }, animationDuration);
+
             return {
               ...b,
               removing: true,
@@ -201,8 +218,10 @@ export default function FloatingBubbles({
               dragX: 0,
             };
           }
+
           return { ...b, dragging: false, dragX: 0 };
         }
+
         return b;
       })
     );
@@ -212,52 +231,57 @@ export default function FloatingBubbles({
 
   return (
     <>
-      {/* ⭐ Updated Mobile-Friendly Notification Button */}
-      <button
+      {/* ⭐ FINAL Mobile-Friendly Notification Button */}
+      {/* <button
         onClick={handleToggle}
-        className={`p-1 sm:p-2 rounded-full shadow-lg hover:scale-110 transition-all duration-300 fixed
-          bottom-16 right-2 sm:right-4 z-50
+        className={`fixed bottom-16 right-3 sm:bottom-20 sm:right-4 
+          p-1 sm:p-2 rounded-full shadow-lg hover:scale-110 transition-all duration-300 z-50
           ${
             notificationsEnabled
-              ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white'
-              : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300'
-          }`}
-        aria-label={notificationsEnabled ? 'Disable notifications' : 'Enable notifications'}
-        title={notificationsEnabled ? 'Disable notifications' : 'Enable notifications'}
+              ? "bg-gradient-to-r from-green-500 to-emerald-500 text-white"
+              : "bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white"
+          }
+        `}
+        aria-label={
+          notificationsEnabled ? "Disable notifications" : "Enable notifications"
+        }
+        title={
+          notificationsEnabled ? "Disable notifications" : "Enable notifications"
+        }
       >
         {notificationsEnabled ? (
-          <Bell className="w-6 h-6 sm:w-4 sm:h-4" />
+          <Bell className="w-7 h-7 sm:w-5 sm:h-5" />
         ) : (
-          <BellOff className="w-6 h-6 sm:w-4 sm:h-4" />
+          <BellOff className="w-7 h-7 sm:w-5 sm:h-5" />
         )}
-      </button>
+      </button> */}
 
       {notificationsEnabled && (
         <div className="fixed bottom-20 sm:bottom-2 right-1 sm:right-4 w-48 sm:w-56 md:w-64 pointer-events-none z-40">
-          {bubbles.map(bubble => (
+          {bubbles.map((bubble) => (
             <div
               key={bubble.id}
               className={`absolute animate-float-up opacity-0 transition-transform ${
-                bubble.animationDuration ? '' : 'duration-300'
+                bubble.animationDuration ? "" : "duration-300"
               } ${
                 bubble.removing
-                  ? bubble.removeDirection === 'left'
-                    ? '-translate-x-32 opacity-0'
-                    : 'translate-x-32 opacity-0'
-                  : ''
+                  ? bubble.removeDirection === "left"
+                    ? "-translate-x-32 opacity-0"
+                    : "translate-x-32 opacity-0"
+                  : ""
               }`}
               style={{
                 left: `${bubble.position.x}px`,
                 transform: bubble.dragX ? `translateX(${bubble.dragX}px)` : undefined,
                 animationDelay: `${bubble.delay}s`,
-                animationDuration: '20s',
+                animationDuration: "20s",
                 transitionDuration: bubble.animationDuration
                   ? `${bubble.animationDuration}ms`
                   : undefined,
               }}
-              onTouchStart={e => handleTouchStart(e, bubble.id)}
-              onTouchMove={e => handleTouchMove(e, bubble.id)}
-              onTouchEnd={e => handleTouchEnd(e, bubble.id)}
+              onTouchStart={(e) => handleTouchStart(e, bubble.id)}
+              onTouchMove={(e) => handleTouchMove(e, bubble.id)}
+              onTouchEnd={(e) => handleTouchEnd(e, bubble.id)}
             >
               <div
                 className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-2 sm:p-3 mb-3 pointer-events-auto transform hover:scale-105 transition-transform duration-300 border border-gray-200 dark:border-gray-700 max-w-[150px] sm:max-w-[220px] cursor-pointer hover:shadow-xl active:scale-95"

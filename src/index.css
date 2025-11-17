@@ -27,6 +27,8 @@
     @apply font-sans antialiased;
     font-family: 'Inter', sans-serif;
   }
+
+  
 }
 
 
@@ -41,6 +43,29 @@
               border-color .3s ease;
 }
 
+
+.live-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: linear-gradient(to right, #00C9A7, #3B82F6, rgb(253, 3, 45));
+  background-position: 0% 50%;
+  background-size: 200% 200%;
+  color: white;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  box-shadow: 0 4px 6px rgba(59, 130, 246, 0.1);
+  transition: all 1s ease;
+
+}
+
+.live-link:hover {
+  
+  background-position: 100% 50%;
+  
+}
 
 
 /* =====================================================================

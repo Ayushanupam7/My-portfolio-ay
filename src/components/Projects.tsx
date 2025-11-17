@@ -62,41 +62,32 @@ export default function Projects() {
 
                 <div className="flex gap-4">
                   {/* Live Link / Work in Progress */}
-                  {project.liveUrl ? (
+                  {project.liveUrl && (
                     <a
                       href={project.liveUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-gradient-to-r from-[#00C9A7] to-[#3B82F6] text-white rounded-lg font-semibold hover:shadow-lg transition-shadow"
+                      className='live-link'
+                    //  className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-gradient-to-r from-[#00C9A7] to-[#3B82F6] text-white rounded-lg font-semibold hover:shadow-lg transition-shadow"
                     >
                       <ExternalLink size={18} />
                       Live Link
                     </a>
-                  ) : (
-                    <div className="flex-1 flex items-center justify-center px-4 py-2 bg-red-600 text-white rounded-lg font-semibold relative marquee-wrapper">
-                      <div className="animate-marquee">
-                        <span>
-                          🚧 Working on it •{' '}
-                          <span className="italic text-xs">abhi ke liye GitHub pe code dekho 😄</span> •
-                        </span>
-                        <span>
-                          🚧 Working on it •{' '}
-                          <span className="italic text-xs">abhi ke liye GitHub pe code dekho 😄</span> •
-                        </span>
-                      </div>
-                    </div>
-                  )}
+                  ) }
 
                   {/* GitHub Link */}
-                  <a
+                 <div className="flex-1 flex items-center justify-center px-4 py-2  bg-gray-100 dark:bg-gray-800 text-white rounded-lg font-semibold relative marquee-wrapper">
+                       <a
                     href={project.githubUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg font-semibold hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                    
+                    className="flex-1 flex items-center justify-center px-4 py-2  bg-gray-100 dark:bg-gray-800 text-white rounded-lg font-semibold relative marquee-wrapper"
                   >
                     <Github size={18} />
                     Code
                   </a>
+                    </div>
                 </div>
               </div>
             </div>
