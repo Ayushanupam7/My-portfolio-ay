@@ -9,6 +9,7 @@ export default function Projects() {
   return (
     <section id="projects" className="py-20 bg-gray-50 dark:bg-gray-800/50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
         {/* Header */}
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
@@ -25,7 +26,7 @@ export default function Projects() {
           {visibleProjects.map((project) => (
             <div
               key={project.id}
-              className="group bg-white dark:bg-gray-900 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 "
+              className="group bg-white dark:bg-gray-900 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300"
             >
               <div className="relative overflow-hidden aspect-video">
                 <img
@@ -52,42 +53,48 @@ export default function Projects() {
                 <div className="flex flex-wrap gap-2 mb-6">
                   {project.techStack.map((tech, index) => (
                     <span
-                      key={index}
-                      className="px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-full text-sm font-medium"
-                    >
-                      {tech}
-                    </span>
+  key={index}
+  className="animated-border px-3 py-1 rounded-full text-sm font-medium 
+             text-gray-700 dark:text-gray-300"
+>
+  <span>{tech}</span>
+</span>
+
                   ))}
                 </div>
 
+
+                {/* ⭐ Updated Buttons Section */}
                 <div className="flex gap-4">
-                  {/* Live Link / Work in Progress */}
+
+                  {/* Live Link */}
                   {project.liveUrl && (
                     <a
                       href={project.liveUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className='live-link'
-                    //  className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-gradient-to-r from-[#00C9A7] to-[#3B82F6] text-white rounded-lg font-semibold hover:shadow-lg transition-shadow"
+                      className="live-link"
                     >
                       <ExternalLink size={18} />
                       Live Link
                     </a>
-                  ) }
+                  )}
 
-                  {/* GitHub Link */}
-                 <div className="flex-1 flex items-center justify-center px-4 py-2  bg-gray-100 dark:bg-gray-800 text-white rounded-lg font-semibold relative marquee-wrapper">
-                       <a
+                  {/* GitHub Code */}
+                  <a
                     href={project.githubUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    
-                    className="flex-1 flex items-center justify-center px-4 py-2  bg-gray-100 dark:bg-gray-800 text-white rounded-lg font-semibold relative marquee-wrapper"
+                    className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 
+                               rounded-lg font-semibold
+                               bg-gray-900 text-white
+                               dark:bg-gray-800 dark:text-white
+                               transition-all hover:shadow-lg active:scale-95"
                   >
                     <Github size={18} />
                     Code
                   </a>
-                    </div>
+
                 </div>
               </div>
             </div>
@@ -105,6 +112,7 @@ export default function Projects() {
             </button>
           </div>
         )}
+
       </div>
     </section>
   );

@@ -152,7 +152,7 @@ export default function LikeButton() {
       {/* ✅ Small icon on mobile, normal size on desktop */}
       <button
         onClick={handleLike}
-        className={`p-3 sm:p-4 rounded-full shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300 ${
+        className={`p-4 sm:p-4 rounded-full shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300 ${
           isLiked
             ? 'bg-gradient-to-r from-red-500 to-pink-500 text-white'
             : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300'
