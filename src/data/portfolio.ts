@@ -220,18 +220,18 @@ export const testimonials = [
     email: "akarshanupam@gmail.com",
     timestamp: new Date("2025-10-10T10:40:00"),
   },
-  {
-    id: 2,
-    name: "Emily Davis",
-    role: "UI/UX Designer",
-    company: "DesignStudio Pro",
-    image: "https://i.pravatar.cc/150?img=9",
-    comment:
-      "The visual design and user experience in Ayush's projects are outstanding. He has a great eye for aesthetics combined with technical implementation skills.",
-    rating: 4,
-    email: "emily.d@designstudiopro.com",
-    timestamp: new Date("2025-10-11T11:00:00"),
-  },
+  // {
+  //   id: 2,
+  //   name: "Emily Davis",
+  //   role: "UI/UX Designer",
+  //   company: "DesignStudio Pro",
+  //   image: "https://i.pravatar.cc/150?img=9",
+  //   comment:
+  //     "The visual design and user experience in Ayush's projects are outstanding. He has a great eye for aesthetics combined with technical implementation skills.",
+  //   rating: 4,
+  //   email: "emily.d@designstudiopro.com",
+  //   timestamp: new Date("2025-10-11T11:00:00"),
+  // },
   {
     id: 3,
     name: "David Martinez",
@@ -243,6 +243,18 @@ export const testimonials = [
     rating: 5,
     email: "david.m@codecraft.io",
     timestamp: new Date("2025-10-11T12:00:00"),
+  },
+  {
+    id: 4,
+    name: "Shreyansh Dixit",
+    role: "Engineer",
+    company: "college",
+    image: "https://i.pravatar.cc/150?img=13",
+    comment:
+      "I realy want to work with Ayush on more projects. His dedication and passion for coding are truly inspiring. Looking forward to seeing his growth in the tech world.",
+    rating: 4.9,
+    email: "krishnadixit0808@gmail.com",
+    timestamp: new Date(), // eat 5 stars do nothing
   },
 ];
 

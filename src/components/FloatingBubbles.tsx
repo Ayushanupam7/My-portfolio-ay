@@ -51,13 +51,11 @@ function TestimonialModal({ testimonial, isOpen, onClose }: TestimonialModalProp
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
-      {/* Backdrop */}
       <button
         aria-label="Close testimonial modal"
         className="absolute inset-0 bg-black/50 transition-opacity duration-300"
         onClick={onClose}
       />
-      {/* Card */}
       <div className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-6 mx-4 max-w-md w-full transform animate-scale-in">
         <button
           onClick={onClose}
@@ -105,7 +103,6 @@ function TestimonialModal({ testimonial, isOpen, onClose }: TestimonialModalProp
           </span>
         </div>
 
-        {/* Decorative pulses */}
         <div className="absolute -top-2 -right-2 w-8 h-8 bg-[#00C9A7] rounded-full opacity-20 animate-pulse" />
         <div className="absolute -bottom-2 -left-2 w-6 h-6 bg-[#00C9A7] rounded-full opacity-20 animate-pulse" />
       </div>
@@ -115,7 +112,7 @@ function TestimonialModal({ testimonial, isOpen, onClose }: TestimonialModalProp
 
 export default function FloatingBubbles({
   enabled = true,
-  onToggleNotifications,
+  onToggleNotifications
 }: FloatingBubblesProps) {
   const [bubbles, setBubbles] = useState<Bubble[]>([]);
   const [isVisible, setIsVisible] = useState(false);
@@ -123,12 +120,8 @@ export default function FloatingBubbles({
   const [selectedTestimonial, setSelectedTestimonial] = useState<Bubble | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // keep local notificationsEnabled in sync with parent prop
-  useEffect(() => {
-    setNotificationsEnabled(enabled);
-  }, [enabled]);
+  useEffect(() => setNotificationsEnabled(enabled), [enabled]);
 
-  // scroll visibility
   useEffect(() => {
     const toggleVisibility = () => setIsVisible(window.pageYOffset > 300);
     toggleVisibility();
@@ -136,25 +129,22 @@ export default function FloatingBubbles({
     return () => window.removeEventListener('scroll', toggleVisibility);
   }, []);
 
-  // bubble generator (latest 2 maintained)
   useEffect(() => {
     if (!notificationsEnabled) {
       setBubbles([]);
       return;
     }
-    // start with one
     setBubbles([generateRandomBubble(0)]);
     const interval = setInterval(() => {
       setBubbles(prev => {
         const latest = prev.slice(-2);
         latest.push(generateRandomBubble(Date.now()));
-        return latest.length > 2 ? latest.slice(-2) : latest;
+        return latest.slice(-2);
       });
     }, 10000);
     return () => clearInterval(interval);
   }, [notificationsEnabled]);
 
-  // toggle bell
   const handleToggle = () => {
     const newVal = !notificationsEnabled;
     setNotificationsEnabled(newVal);
@@ -162,20 +152,21 @@ export default function FloatingBubbles({
     if (!newVal) setBubbles([]);
   };
 
-  // modal controls
   const handleBubbleClick = (bubble: Bubble) => {
     setSelectedTestimonial(bubble);
     setIsModalOpen(true);
   };
+
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setTimeout(() => setSelectedTestimonial(null), 300);
   };
 
-  // touch/drag handlers for swipe-to-dismiss
   const handleTouchStart = (e: React.TouchEvent, bubbleId: number) => {
     const touchX = e.touches[0].clientX;
-    setBubbles(prev => prev.map(b => (b.id === bubbleId ? { ...b, dragX: touchX, dragging: true } : b)));
+    setBubbles(prev => prev.map(b =>
+      b.id === bubbleId ? { ...b, dragX: touchX, dragging: true } : b
+    ));
   };
 
   const handleTouchMove = (e: React.TouchEvent, bubbleId: number) => {
@@ -186,7 +177,7 @@ export default function FloatingBubbles({
           return { ...b, dragX: currentX - b.dragX };
         }
         return b;
-      }),
+      })
     );
   };
 
@@ -213,7 +204,7 @@ export default function FloatingBubbles({
           return { ...b, dragging: false, dragX: 0 };
         }
         return b;
-      }),
+      })
     );
   };
 
@@ -221,23 +212,28 @@ export default function FloatingBubbles({
 
   return (
     <>
-      {/* Circular Notification Toggle Button */}
+      {/* ⭐ Updated Mobile-Friendly Notification Button */}
       <button
         onClick={handleToggle}
-        className={`p-2 rounded-full shadow-lg hover:scale-110 transition-all duration-300 fixed bottom-20 right-1 sm:right-4 z-50 ${
-          notificationsEnabled
-            ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white'
-            : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300'
-        }`}
+        className={`p-1 sm:p-2 rounded-full shadow-lg hover:scale-110 transition-all duration-300 fixed
+          bottom-16 right-2 sm:right-4 z-50
+          ${
+            notificationsEnabled
+              ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white'
+              : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300'
+          }`}
         aria-label={notificationsEnabled ? 'Disable notifications' : 'Enable notifications'}
         title={notificationsEnabled ? 'Disable notifications' : 'Enable notifications'}
       >
-        {notificationsEnabled ? <Bell size={14} fill="currentColor" /> : <BellOff size={14} />}
+        {notificationsEnabled ? (
+          <Bell className="w-6 h-6 sm:w-4 sm:h-4" />
+        ) : (
+          <BellOff className="w-6 h-6 sm:w-4 sm:h-4" />
+        )}
       </button>
 
-      {/* Floating Bubbles */}
       {notificationsEnabled && (
-        <div className="fixed bottom-20 sm:bottom-24 right-1 sm:right-4 w-48 sm:w-56 md:w-64 pointer-events-none z-40">
+        <div className="fixed bottom-20 sm:bottom-2 right-1 sm:right-4 w-48 sm:w-56 md:w-64 pointer-events-none z-40">
           {bubbles.map(bubble => (
             <div
               key={bubble.id}
@@ -255,7 +251,9 @@ export default function FloatingBubbles({
                 transform: bubble.dragX ? `translateX(${bubble.dragX}px)` : undefined,
                 animationDelay: `${bubble.delay}s`,
                 animationDuration: '20s',
-                transitionDuration: bubble.animationDuration ? `${bubble.animationDuration}ms` : undefined,
+                transitionDuration: bubble.animationDuration
+                  ? `${bubble.animationDuration}ms`
+                  : undefined,
               }}
               onTouchStart={e => handleTouchStart(e, bubble.id)}
               onTouchMove={e => handleTouchMove(e, bubble.id)}
@@ -275,7 +273,9 @@ export default function FloatingBubbles({
                     <p className="font-semibold text-[10px] sm:text-xs text-gray-900 dark:text-white truncate">
                       {bubble.name}
                     </p>
-                    <p className="text-[8px] sm:text-[9px] text-gray-400 mt-0.5 truncate">{bubble.role}</p>
+                    <p className="text-[8px] sm:text-[9px] text-gray-400 mt-0.5 truncate">
+                      {bubble.role}
+                    </p>
                     <p className="text-[9px] sm:text-[10px] text-gray-600 dark:text-gray-300 mt-0.5 break-words line-clamp-2">
                       {bubble.comment}
                     </p>
