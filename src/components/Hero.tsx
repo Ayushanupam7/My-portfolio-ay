@@ -44,51 +44,68 @@ export default function Hero() {
             </p>
           </div>
 
-          {/* BUTTONS — SAME SIZE EVERYWHERE */}
+          {/* BUTTONS (FIXED SIZE ON ALL DEVICES) */}
           <div className="flex flex-col gap-4 justify-center items-center md:flex-row md:gap-6 animate-slide-up animation-delay-600">
 
-            {/* Row for first two buttons on mobile */}
+            {/* First two buttons (row on mobile) */}
             <div className="flex gap-3">
+              {/* Hire Me */}
               <button
                 onClick={scrollToContact}
                 className="
-                  group px-8 py-4 text-base
-                  bg-gradient-to-r from-[#00C9A7] to-[#3B82F6]
-                  text-white rounded-full font-semibold hover:shadow-lg hover:scale-105
-                  transition-all duration-300 flex items-center gap-2
+                  group 
+                  px-6 py-3 
+                  min-w-[140px]
+                  text-sm 
+                  bg-gradient-to-r from-[#00C9A7] to-[#3B82F6] 
+                  text-white rounded-full font-semibold 
+                  hover:shadow-lg hover:scale-105
+                  transition-all duration-300 
+                  flex items-center justify-center gap-2
                 "
               >
-                <Mail size={20} />
+                <Mail size={18} />
                 Hire Me
               </button>
 
+              {/* My Projects */}
               <button
                 onClick={scrollToProjects}
                 className="
-                  group px-8 py-4 text-base
+                  group 
+                  px-6 py-3 
+                  min-w-[140px]
+                  text-sm 
                   bg-gradient-to-r from-[#00C9A7] to-[#3B82F6]
-                  text-white rounded-full font-semibold hover:shadow-lg hover:scale-105
-                  transition-all duration-300 flex items-center gap-2
+                  text-white rounded-full font-semibold 
+                  hover:shadow-lg hover:scale-105
+                  transition-all duration-300 
+                  flex items-center justify-center gap-2
                 "
               >
-                <Folder size={20} />
+                <Folder size={18} />
                 My Projects
               </button>
             </div>
 
-            {/* Third button below on mobile — joins row on desktop */}
+            {/* Third button (below on mobile, joins row on desktop) */}
             <a
               href={personalInfo.resume}
               download
               className="
-                group px-8 py-4 text-base
-                bg-white dark:bg-gray-800 text-gray-900 dark:text-white
-                border-2 border-gray-300 dark:border-gray-700 rounded-full font-semibold
-                hover:border-[#00C9A7] hover:scale-105 transition-all duration-300
-                flex items-center gap-2
+                group 
+                px-6 py-3 
+                min-w-[140px]
+                text-sm
+                bg-white dark:bg-gray-800 text-gray-900 dark:text-white 
+                border-2 border-gray-300 dark:border-gray-700 
+                rounded-full font-semibold 
+                hover:border-[#00C9A7] hover:scale-105 
+                transition-all duration-300 
+                flex items-center justify-center gap-2
               "
             >
-              <Download size={20} />
+              <Download size={18} />
               Download Resume
             </a>
 
@@ -131,7 +148,6 @@ export default function Hero() {
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#00C9A7]/10 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-[#3B82F6]/10 rounded-full blur-3xl animate-pulse animation-delay-1000"></div>
       </div>
-
     </section>
   );
 }
