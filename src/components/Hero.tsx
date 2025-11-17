@@ -1,5 +1,4 @@
 import { Download, Mail, ArrowDown, Linkedin, Github, Instagram, Twitter, Folder } from 'lucide-react';
-import { FolderGit2 } from 'lucide-react';
 import { personalInfo } from '../data/portfolio';
 
 export default function Hero() {
@@ -10,6 +9,7 @@ export default function Hero() {
   const scrollToAbout = () => {
     document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' });
   };
+
   const scrollToProjects = () => {
     document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -18,6 +18,8 @@ export default function Hero() {
     <section id="home" className="min-h-screen flex items-center justify-center relative pt-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="text-center space-y-8">
+
+          {/* Profile */}
           <div className="space-y-4">
             <div className="inline-block animate-fade-in">
               <div className="w-32 h-32 mx-auto rounded-full bg-gradient-to-br from-[#00C9A7] to-[#3B82F6] p-1">
@@ -42,85 +44,81 @@ export default function Hero() {
             </p>
           </div>
 
-          {/* Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-slide-up animation-delay-600">
-            <button
-              onClick={scrollToContact}
-              className="group px-8 py-4 bg-gradient-to-r from-[#00C9A7] to-[#3B82F6] text-white rounded-full font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300 flex items-center gap-2"
-            >
-              <Mail size={20} />
-              Hire Me
-            </button>
-            <button
-              onClick={scrollToProjects}
-              className="group px-8 py-4 bg-gradient-to-r from-[#00C9A7] to-[#3B82F6] text-white rounded-full font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300 flex items-center gap-2"
-            >
-              <Folder size={20} />
-              My Projects
-            </button>
+          {/* BUTTONS — SAME SIZE EVERYWHERE */}
+          <div className="flex flex-col gap-4 justify-center items-center md:flex-row md:gap-6 animate-slide-up animation-delay-600">
+
+            {/* Row for first two buttons on mobile */}
+            <div className="flex gap-3">
+              <button
+                onClick={scrollToContact}
+                className="
+                  group px-8 py-4 text-base
+                  bg-gradient-to-r from-[#00C9A7] to-[#3B82F6]
+                  text-white rounded-full font-semibold hover:shadow-lg hover:scale-105
+                  transition-all duration-300 flex items-center gap-2
+                "
+              >
+                <Mail size={20} />
+                Hire Me
+              </button>
+
+              <button
+                onClick={scrollToProjects}
+                className="
+                  group px-8 py-4 text-base
+                  bg-gradient-to-r from-[#00C9A7] to-[#3B82F6]
+                  text-white rounded-full font-semibold hover:shadow-lg hover:scale-105
+                  transition-all duration-300 flex items-center gap-2
+                "
+              >
+                <Folder size={20} />
+                My Projects
+              </button>
+            </div>
+
+            {/* Third button below on mobile — joins row on desktop */}
             <a
               href={personalInfo.resume}
               download
-              className="group px-8 py-4 bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-2 border-gray-300 dark:border-gray-700 rounded-full font-semibold hover:border-[#00C9A7] hover:scale-105 transition-all duration-300 flex items-center gap-2"
+              className="
+                group px-8 py-4 text-base
+                bg-white dark:bg-gray-800 text-gray-900 dark:text-white
+                border-2 border-gray-300 dark:border-gray-700 rounded-full font-semibold
+                hover:border-[#00C9A7] hover:scale-105 transition-all duration-300
+                flex items-center gap-2
+              "
             >
               <Download size={20} />
               Download Resume
             </a>
-            
+
           </div>
 
-          {/* Social Links (reduced margin) */}
+          {/* Social Icons */}
           <div className="flex justify-center gap-6 pt-0 animate-slide-up animation-delay-800">
-            <a
-              href={personalInfo.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-500 hover:text-[#0077b5] transition-colors"
-              aria-label="LinkedIn"
-            >
+            <a href={personalInfo.linkedin} className="text-gray-500 hover:text-[#0077b5] transition-colors">
               <Linkedin size={18} />
             </a>
-            <a
-              href={personalInfo.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-500 hover:text-gray-900 dark:hover:text-white transition-colors"
-              aria-label="GitHub"
-            >
+            <a href={personalInfo.github} className="text-gray-500 hover:text-gray-900 dark:hover:text-white transition-colors">
               <Github size={18} />
             </a>
-            <a
-              href={personalInfo.instagram}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-500 hover:text-[#E4405F] transition-colors"
-              aria-label="Instagram"
-            >
+            <a href={personalInfo.instagram} className="text-gray-500 hover:text-[#E4405F] transition-colors">
               <Instagram size={18} />
             </a>
-            <a
-              href={personalInfo.twitter}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-500 hover:text-[#1DA1F2] transition-colors"
-              aria-label="Twitter"
-            >
+            <a href={personalInfo.twitter} className="text-gray-500 hover:text-[#1DA1F2] transition-colors">
               <Twitter size={18} />
             </a>
           </div>
 
-          {/* Scroll Down Icon with Tooltip */}
+          {/* Scroll Down */}
           <div className="pt-1 relative flex justify-center animate-bounce group">
             <button
               onClick={scrollToAbout}
               className="text-gray-400 hover:text-[#00C9A7] transition-colors relative flex flex-col items-center"
-              aria-label="Scroll to about section"
             >
-              {/* Tooltip */}
-              <span className="top-7 opacity-0 group-hover:opacity-100  text-gray-500 dark:text-gray-400 transition-opacity duration-300">
+              <span className="top-7 opacity-0 group-hover:opacity-100 text-gray-500 dark:text-gray-400 transition-opacity duration-300">
                 Scroll to know more
               </span>
-
               <ArrowDown size={20} />
             </button>
           </div>
@@ -128,12 +126,12 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Background Gradient Blobs */}
+      {/* Background Blobs */}
       <div className="absolute inset-0 -z-10 overflow-hidden">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#00C9A7]/10 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-[#3B82F6]/10 rounded-full blur-3xl animate-pulse animation-delay-1000"></div>
       </div>
-      
+
     </section>
   );
 }
