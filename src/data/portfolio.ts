@@ -34,10 +34,10 @@ export const personalInfo = {
 // 🛠 Skills
 // ==============================
 export const skills = {
-  languages: ["Java", "C++", "JavaScript", "TypeScript", "Python"],
+  languages: ["HTML", "JavaScript", "TypeScript", "React", "Python"],
   frontend: ["HTML5", "CSS3", "JavaScript", "React", "Tailwind CSS", "Next.js"],
-  backend: ["Node.js", "Express.js", "REST APIs"],
-  database: ["PostgreSQL", "MongoDB", "SQLite"],
+  backend: ["Python"],
+  database: ["PostgreSQL", "Supabase", "MongoDB", "SQLite"],
   tools: [
     "Drizzle ORM",
     "React Router",
@@ -47,7 +47,7 @@ export const skills = {
     "VS Code",
     "Figma",
   ],
-  libraries: ["React Query", "Zod", "React Hook Form", "Chart.js"],
+  libraries: ["React Query", "Zod", "Pandas", "React Hook Form", "Chart.js"],
   other: [
     "Data Structures & Algorithms",
     "UI/UX Design",
@@ -201,7 +201,7 @@ export const certificates = [
       "https://images.pexels.com/photos/577585/pexels-photo-577585.jpeg?auto=compress&cs=tinysrgb&w=800",
     skills: ["React", "TypeScript", "Advanced Patterns"],
   }
-  
+
 ];
 
 // ==============================

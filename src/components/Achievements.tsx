@@ -371,24 +371,20 @@ function SwipeableCertificates({ certificates }: any) {
    Certificate Card WITH LINK
 ============================================================ */
 function CertificateCard({ certificate }: any) {
-  return (
-    <div className="flex-shrink-0 w-[200px] sm:w-[240px] md:w-[280px] mx-2 bg-white 
-    dark:bg-gray-800 rounded-2xl overflow-hidden border border-gray-200 
-    dark:border-gray-700 shadow-md hover:shadow-xl transition-transform duration-500 
-    hover:-translate-y-2 hover:scale-[1.03]">
+  const link = certificate.link || certificate.certificateUrl;
+  const cardClasses = "flex-shrink-0 w-[200px] sm:w-[240px] md:w-[280px] mx-2 bg-white dark:bg-gray-800 rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-700 shadow-md hover:shadow-xl transition-transform duration-500 hover:-translate-y-2 hover:scale-[1.03] flex flex-col";
 
+  const Content = () => (
+    <>
       <div className="relative aspect-video overflow-hidden">
-
         {/* Floating link icon */}
-        {certificate.link && (
-          <a
-            href={certificate.link}
-            target="_blank"
+        {link && (
+          <div
             className="absolute top-2 right-2 z-20 bg-white/90 dark:bg-gray-900/80 
             p-2 rounded-full shadow hover:scale-110 transition"
           >
             <ExternalLink size={18} className="text-[#3B82F6]" />
-          </a>
+          </div>
         )}
 
         <img
@@ -398,13 +394,13 @@ function CertificateCard({ certificate }: any) {
         />
       </div>
 
-      <div className="p-4 text-center">
+      <div className="p-4 text-center flex flex-col flex-grow">
         <h4 className="text-base font-semibold text-gray-900 dark:text-white mb-1">
           {certificate.title}
         </h4>
         <p className="text-[#00C9A7] text-sm font-medium mb-1">{certificate.issuer}</p>
 
-        <div className="flex justify-center items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
+        <div className="flex justify-center items-center gap-2 text-xs text-gray-500 dark:text-gray-400 mb-auto">
           <Calendar size={14} />
           {new Date(certificate.date).toLocaleDateString("en-US", {
             year: "numeric",
@@ -413,20 +409,37 @@ function CertificateCard({ certificate }: any) {
         </div>
 
         {/* Main button */}
-        {certificate.link && (
-          <a
-            href={certificate.link}
-            target="_blank"
+        {link && (
+          <div
             className="mt-3 inline-flex items-center justify-center gap-2 
             px-4 py-2 text-xs font-semibold text-white 
             bg-gradient-to-r from-[#3B82F6] to-[#00C9A7] 
             rounded-full shadow hover:shadow-lg transition"
           >
             View Certificate
-            <ExternalLink size={14} />
-          </a>
+
+          </div>
         )}
       </div>
+    </>
+  );
+
+  if (link) {
+    return (
+      <a
+        href={link}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`${cardClasses} cursor-pointer block`}
+      >
+        <Content />
+      </a>
+    );
+  }
+
+  return (
+    <div className={cardClasses}>
+      <Content />
     </div>
   );
 }
