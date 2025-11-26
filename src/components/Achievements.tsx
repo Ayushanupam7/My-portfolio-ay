@@ -65,9 +65,9 @@ export default function Achievements() {
   );
 }
 
-/* ============================================================
+/* ==========================================================================
    Achievement Card — WITH LINKS
-============================================================ */
+=========================================================================== */
 function AchievementCard({ achievement, Icon, formatDate }: any) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
@@ -94,10 +94,8 @@ function AchievementCard({ achievement, Icon, formatDate }: any) {
       transition={{ duration: 0.5 }}
     >
       <div className="h-full bg-white dark:bg-gray-900/60 rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl border border-gray-200 dark:border-gray-700/50 transition-all duration-500 flex flex-col">
-
         {/* Image Section */}
         <div className="relative h-48 sm:h-56 overflow-hidden">
-
           {/* Floating Link Icon */}
           {achievement.link && (
             <a
@@ -131,12 +129,10 @@ function AchievementCard({ achievement, Icon, formatDate }: any) {
 
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
 
-          {/* Icon Badge */}
           <div className="absolute top-4 right-4 p-2 bg-white/90 rounded-xl shadow-lg">
             <Icon className="text-[#00C9A7]" size={18} />
           </div>
 
-          {/* Date */}
           <div className="absolute bottom-4 left-4 flex items-center gap-2 bg-black/40 px-3 py-1.5 rounded-full">
             <Calendar size={14} className="text-white" />
             <span className="text-white text-xs">{formatDate(achievement.date)}</span>
@@ -152,18 +148,15 @@ function AchievementCard({ achievement, Icon, formatDate }: any) {
           <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed flex-grow line-clamp-3">
             {achievement.description}
           </p>
-
-          {/* Main "View Link" Button */}
-
         </div>
       </div>
     </motion.div>
   );
 }
 
-/* ============================================================
-   SwipeableRow — Dot Sync + Clickable Dots
-============================================================ */
+/* ==========================================================================
+   SwipeableRow — Elementor Style Long Active Dots
+=========================================================================== */
 function SwipeableRow({ children }: { children: React.ReactNode }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const items = Array.from(children as any);
@@ -177,7 +170,6 @@ function SwipeableRow({ children }: { children: React.ReactNode }) {
   const frame = useRef<number>();
   const timeout = useRef<any>(null);
 
-  // Sync dots on scroll
   const syncDots = () => {
     if (!containerRef.current) return;
     const index = Math.round(containerRef.current.scrollLeft / itemWidth);
@@ -191,7 +183,6 @@ function SwipeableRow({ children }: { children: React.ReactNode }) {
     return () => c.removeEventListener("scroll", syncDots);
   }, []);
 
-  // Auto scroll
   useEffect(() => {
     const c = containerRef.current;
     if (!c) return;
@@ -218,7 +209,7 @@ function SwipeableRow({ children }: { children: React.ReactNode }) {
     timeout.current = setTimeout(() => setPaused(false), 5000);
   };
 
-  // Touch drag
+  /* Touch Drag */
   const startX = useRef(0);
   const dragging = useRef(false);
 
@@ -255,7 +246,7 @@ function SwipeableRow({ children }: { children: React.ReactNode }) {
         {children}
       </div>
 
-      {/* Dots */}
+      {/* Elementor Style Dots */}
       <div className="flex justify-center mt-4 gap-3">
         {items.map((_, i) => (
           <button
@@ -266,10 +257,10 @@ function SwipeableRow({ children }: { children: React.ReactNode }) {
                 behavior: "smooth",
               })
             }
-            className={`h-3 w-3 rounded-full transition-all 
-            ${i === activeIndex
-                ? "bg-gradient-to-r from-[#00C9A7] to-[#3B82F6] scale-125 shadow-md"
-                : "bg-gray-400 dark:bg-gray-500 opacity-60"
+            className={`rounded-full transition-all 
+              ${i === activeIndex
+                ? "w-8 h-3 bg-gradient-to-r from-[#00C9A7] to-[#3B82F6] shadow-md"
+                : "w-3 h-3 bg-gray-400 dark:bg-gray-500 opacity-60"
               }`}
           />
         ))}
@@ -278,9 +269,9 @@ function SwipeableRow({ children }: { children: React.ReactNode }) {
   );
 }
 
-/* ============================================================
-   SwipeableCertificates — WITH LINKS + DOT SYNC
-============================================================ */
+/* ==========================================================================
+   SwipeableCertificates — Elementor Style Active Dot
+=========================================================================== */
 function SwipeableCertificates({ certificates }: any) {
   const containerRef = useRef<HTMLDivElement>(null);
   const items = certificates;
@@ -355,10 +346,10 @@ function SwipeableCertificates({ certificates }: any) {
                 behavior: "smooth",
               })
             }
-            className={`h-3 w-3 rounded-full transition-all 
-            ${i === activeIndex
-                ? "bg-gradient-to-r from-[#3B82F6] to-[#00C9A7] scale-125 shadow-md"
-                : "bg-gray-400 dark:bg-gray-500 opacity-60"
+            className={`rounded-full transition-all 
+              ${i === activeIndex
+                ? "w-8 h-3 bg-gradient-to-r from-[#3B82F6] to-[#00C9A7] shadow-md"
+                : "w-3 h-3 bg-gray-400 dark:bg-gray-500 opacity-60"
               }`}
           />
         ))}
@@ -367,16 +358,15 @@ function SwipeableCertificates({ certificates }: any) {
   );
 }
 
-/* ============================================================
-   Certificate Card WITH LINK
-============================================================ */
+/* ==========================================================================
+   Certificate Card WITH Link
+=========================================================================== */
 function CertificateCard({ certificate }: any) {
   const link = certificate.link || certificate.certificateUrl;
 
   return (
     <div className="flex-shrink-0 w-[200px] sm:w-[240px] md:w-[280px] mx-2 bg-white dark:bg-gray-800 rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-700 shadow-md hover:shadow-xl transition-transform duration-500 hover:-translate-y-2 hover:scale-[1.03] flex flex-col">
       <div className="relative aspect-video overflow-hidden">
-        {/* Floating link icon */}
         {link && (
           <a
             href={link}
@@ -400,7 +390,9 @@ function CertificateCard({ certificate }: any) {
         <h4 className="text-base font-semibold text-gray-900 dark:text-white mb-1">
           {certificate.title}
         </h4>
-        <p className="text-[#00C9A7] text-sm font-medium mb-1">{certificate.issuer}</p>
+        <p className="text-[#00C9A7] text-sm font-medium mb-1">
+          {certificate.issuer}
+        </p>
 
         <div className="flex justify-center items-center gap-2 text-xs text-gray-500 dark:text-gray-400 mb-auto">
           <Calendar size={14} />
@@ -410,7 +402,6 @@ function CertificateCard({ certificate }: any) {
           })}
         </div>
 
-        {/* Main button */}
         {link && (
           <a
             href={link}
