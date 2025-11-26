@@ -42,30 +42,54 @@
     color .3s ease,
     border-color .3s ease;
 }
-
-
 .live-link {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.5rem 1rem;
+  width: 100%;                 /* full width, responsive */
+  padding: 0.75rem 1rem;       /* better tap target on mobile */
+
   background: linear-gradient(to right, #00C9A7, #3B82F6, rgb(253, 3, 45));
   background-position: 0% 50%;
   background-size: 200% 200%;
+
   color: white;
   border-radius: 0.5rem;
   font-weight: 600;
+
   box-shadow: 0 4px 6px rgba(59, 130, 246, 0.1);
   transition: all 1s ease;
-
 }
 
 .live-link:hover {
-
   background-position: 100% 50%;
-
 }
+
+.github-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;                 /* responsive */
+  padding: 0.75rem 1rem;       /* matches live-link */
+  
+  background: linear-gradient(to right, #01425c, #460101, #89aae6);
+  background-position: 0% 50%;
+  background-size: 200% 200%;
+
+  color: white;
+  border-radius: 0.5rem;
+  font-weight: 600;
+
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.25);
+  transition: all 1s ease;
+}
+
+.github-link:hover {
+  background-position: 100% 50%;
+}
+
 
 
 /* =====================================================================
@@ -543,4 +567,15 @@
   100% {
     background-position: 100% 50%;
   }
+}@keyframes scroll-carousel {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-scroll-carousel {
+  animation: scroll-carousel 16s linear infinite;
 }
