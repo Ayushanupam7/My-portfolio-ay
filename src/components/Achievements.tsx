@@ -372,19 +372,21 @@ function SwipeableCertificates({ certificates }: any) {
 ============================================================ */
 function CertificateCard({ certificate }: any) {
   const link = certificate.link || certificate.certificateUrl;
-  const cardClasses = "flex-shrink-0 w-[200px] sm:w-[240px] md:w-[280px] mx-2 bg-white dark:bg-gray-800 rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-700 shadow-md hover:shadow-xl transition-transform duration-500 hover:-translate-y-2 hover:scale-[1.03] flex flex-col";
 
-  const Content = () => (
-    <>
+  return (
+    <div className="flex-shrink-0 w-[200px] sm:w-[240px] md:w-[280px] mx-2 bg-white dark:bg-gray-800 rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-700 shadow-md hover:shadow-xl transition-transform duration-500 hover:-translate-y-2 hover:scale-[1.03] flex flex-col">
       <div className="relative aspect-video overflow-hidden">
         {/* Floating link icon */}
         {link && (
-          <div
+          <a
+            href={link}
+            target="_blank"
+            rel="noopener noreferrer"
             className="absolute top-2 right-2 z-20 bg-white/90 dark:bg-gray-900/80 
             p-2 rounded-full shadow hover:scale-110 transition"
           >
             <ExternalLink size={18} className="text-[#3B82F6]" />
-          </div>
+          </a>
         )}
 
         <img
@@ -410,36 +412,19 @@ function CertificateCard({ certificate }: any) {
 
         {/* Main button */}
         {link && (
-          <div
+          <a
+            href={link}
+            target="_blank"
+            rel="noopener noreferrer"
             className="mt-3 inline-flex items-center justify-center gap-2 
             px-4 py-2 text-xs font-semibold text-white 
             bg-gradient-to-r from-[#3B82F6] to-[#00C9A7] 
             rounded-full shadow hover:shadow-lg transition"
           >
             View Certificate
-
-          </div>
+          </a>
         )}
       </div>
-    </>
-  );
-
-  if (link) {
-    return (
-      <a
-        href={link}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={`${cardClasses} cursor-pointer block`}
-      >
-        <Content />
-      </a>
-    );
-  }
-
-  return (
-    <div className={cardClasses}>
-      <Content />
     </div>
   );
 }
