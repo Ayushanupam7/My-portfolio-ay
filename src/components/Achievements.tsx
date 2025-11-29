@@ -96,7 +96,6 @@ function AchievementCard({ achievement, Icon, formatDate }: any) {
       <div className="h-full bg-white dark:bg-gray-900/60 rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl border border-gray-200 dark:border-gray-700/50 transition-all duration-500 flex flex-col">
         {/* Image Section */}
         <div className="relative h-48 sm:h-56 overflow-hidden">
-          {/* Floating Link Icon */}
           {achievement.link && (
             <a
               href={achievement.link}
@@ -135,13 +134,16 @@ function AchievementCard({ achievement, Icon, formatDate }: any) {
 
           <div className="absolute bottom-4 left-4 flex items-center gap-2 bg-black/40 px-3 py-1.5 rounded-full">
             <Calendar size={14} className="text-white" />
-            <span className="text-white text-xs">{formatDate(achievement.date)}</span>
+            <span className="text-white text-xs">
+              {formatDate(achievement.date)}
+            </span>
           </div>
         </div>
 
         {/* Content */}
         <div className="p-6 flex flex-col flex-grow">
-          <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-2 line-clamp-1">
+          {/* UPDATED TITLE */}
+          <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-2 break-words whitespace-normal">
             {achievement.title}
           </h4>
 
@@ -155,7 +157,7 @@ function AchievementCard({ achievement, Icon, formatDate }: any) {
 }
 
 /* ==========================================================================
-   SwipeableRow — Elementor Style Long Active Dots
+   SwipeableRow
 =========================================================================== */
 function SwipeableRow({ children }: { children: React.ReactNode }) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -246,7 +248,7 @@ function SwipeableRow({ children }: { children: React.ReactNode }) {
         {children}
       </div>
 
-      {/* Elementor Style Dots */}
+      {/* Dots */}
       <div className="flex justify-center mt-4 gap-3">
         {items.map((_, i) => (
           <button
@@ -258,9 +260,10 @@ function SwipeableRow({ children }: { children: React.ReactNode }) {
               })
             }
             className={`rounded-full transition-all 
-              ${i === activeIndex
-                ? "w-8 h-3 bg-gradient-to-r from-[#00C9A7] to-[#3B82F6] shadow-md"
-                : "w-3 h-3 bg-gray-400 dark:bg-gray-500 opacity-60"
+              ${
+                i === activeIndex
+                  ? "w-8 h-3 bg-gradient-to-r from-[#00C9A7] to-[#3B82F6] shadow-md"
+                  : "w-3 h-3 bg-gray-400 dark:bg-gray-500 opacity-60"
               }`}
           />
         ))}
@@ -270,7 +273,7 @@ function SwipeableRow({ children }: { children: React.ReactNode }) {
 }
 
 /* ==========================================================================
-   SwipeableCertificates — Elementor Style Active Dot
+   SwipeableCertificates
 =========================================================================== */
 function SwipeableCertificates({ certificates }: any) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -332,7 +335,10 @@ function SwipeableCertificates({ certificates }: any) {
         style={{ scrollBehavior: "smooth" }}
       >
         {items.map((certificate: any) => (
-          <CertificateCard key={certificate.id} certificate={certificate} />
+          <CertificateCard
+            key={certificate.id}
+            certificate={certificate}
+          />
         ))}
       </div>
 
@@ -347,9 +353,10 @@ function SwipeableCertificates({ certificates }: any) {
               })
             }
             className={`rounded-full transition-all 
-              ${i === activeIndex
-                ? "w-8 h-3 bg-gradient-to-r from-[#3B82F6] to-[#00C9A7] shadow-md"
-                : "w-3 h-3 bg-gray-400 dark:bg-gray-500 opacity-60"
+              ${
+                i === activeIndex
+                  ? "w-8 h-3 bg-gradient-to-r from-[#3B82F6] to-[#00C9A7] shadow-md"
+                  : "w-3 h-3 bg-gray-400 dark:bg-gray-500 opacity-60"
               }`}
           />
         ))}
@@ -359,7 +366,7 @@ function SwipeableCertificates({ certificates }: any) {
 }
 
 /* ==========================================================================
-   Certificate Card WITH Link
+   Certificate Card
 =========================================================================== */
 function CertificateCard({ certificate }: any) {
   const link = certificate.link || certificate.certificateUrl;
