@@ -10,21 +10,21 @@ export default function About() {
       level: "College",
       degree: personalInfo.education,
       institution: personalInfo.college,
-      details: `CGPA: ${personalInfo.cgpa}`,
+      // details: `CGPA: ${personalInfo.cgpa}`,
       color: "from-[#00C9A7] to-[#3B82F6]"
     },
     {
       level: "12th Grade",
       degree: "Higher Secondary Education",
       institution: personalInfo.school12th || "School Name",
-      details: `Percentage: ${personalInfo.percentage12th || "XX%"} | Year: ${personalInfo.year12th || "XXXX"}`,
+      // details: `Percentage: ${personalInfo.percentage12th || "XX%"} | Year: ${personalInfo.year12th || "XXXX"}`,
       color: "from-[#3B82F6] to-[#00C9A7]"
     },
     {
       level: "10th Grade",
       degree: "Secondary Education",
       institution: personalInfo.school10th || "School Name",
-      details: `Percentage: ${personalInfo.percentage10th || "XX%"} | Year: ${personalInfo.year10th || "XXXX"}`,
+      // details: `Percentage: ${personalInfo.percentage10th || "XX%"} | Year: ${personalInfo.year10th || "XXXX"}`,
       color: "from-[#00C9A7] to-[#3B82F6]"
     }
   ];
